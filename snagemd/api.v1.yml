@@ -5,6 +5,10 @@
 # drastically as well as without warning. This notice will be removed once this
 # is no longer the case.
 
+#
+# Components
+#
+
 components:
   schemas:
     Media:
@@ -59,57 +63,111 @@ components:
             tags:
               type: array
 
-routes:
+    Role:
+      type: object
+      required:
+        - roleType
+      properties:
+        roleType:
+          type: string
+
+    Admin:
+      allOf:
+        - $ref: "#components/schemas/Role"
+
+    Moderator:
+      allOf:
+        - $ref: "#components/schemas/Role"
+
+    User:
+      allOf:
+        - $ref: "#components/schemas/Role"
+
+#
+# Endpoints
+#
+
+endpoints:
   /:
     get:
-      description: >-
-        Returns all routes the user has access to
+      description: Returns all media the user has access to
       responses:
         "200":
-          description: "An object of routes"
+          description: A list of media
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Media"
+
+  /{media_id}:
+    get:
+      description: Returns information about {media_id} the user has access to
+      responses:
+        "200":
+          description: An object of media properties
+          content:
+            application/json:
+              schema:
+                type: object
+                  $ref: "#/components/schemas/Media"
+
+  /{user_id}:
+    get:
+      description: Returns all media of {user_id} the user has access to
+      responses:
+        "200":
+          description: A list of media
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /{playlist_id}:
+    get:
+      description: >-
+        Returns all media from the {playlist_id} the user has access to
+      responses:
+        "200":
+          description: "A list of media"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Playlist"
+
+  # Would like to offer a few different Oauth2 methods:
+  #   - Self-hosted and handled by snagem
+  #   - GitHub
+  #   - GitLab?
+  #   - Google
+  #   - Something else?
+  /auth:
+
+  /settings:
+    get:
+      description: Returns all settings the current user has access to
+      responses:
+        "200":
+          description: "An object of current settings"
           content:
             application/json:
               schema:
                 type: object
 
-  /library:
+  /settings/roles:
     get:
-      description: >-
-        Returns all media from the library the user has access to
+      description: Returns all roles the current user has access to
       responses:
         "200":
-          description: "A list of media"
+          description: "A list of roles"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Media"
-
-  /library/{user_id}:
-    get:
-      description: >-
-        Returns all media from the library of {user_id} the user has access to
-      responses:
-        "200":
-          description: "A list of media"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Media"
-
-  /library/{user_id}/{playlist_id}:
-    get:
-      description: >-
-        Returns all media from the {playlist_id} by {user_id} the user has access to
-      responses:
-        "200":
-          description: "A list of media"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Media"
+                  $ref: "#/components/schemas/Roles"
