@@ -1,0 +1,43 @@
+# Snagem API v1 Specification
+# http://spec.openapis.org/oas/v3.0.3
+
+#
+# /library
+#
+
+library:
+  # /library/search
+  # /library/search?query=%s
+  search:
+    # /library/search?authors=%s
+    authors: List[str]
+    domain: str
+    format: Dict[Any, Any]
+    length: str
+    name: str
+    query: str
+    size: str
+
+#
+# /queue
+#
+
+queue:
+  search:
+    filters:
+      authors: List[str]
+      domain: str
+      format: Dict[Any, Any]
+      length: str
+      name: str
+      size: str
+    query: List[str]
+
+#
+# /settings
+#
+
+settings:
+  format:
+    audio:
+    video:
