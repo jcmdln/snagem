@@ -140,11 +140,11 @@ endpoints:
                 items:
                   $ref: "#/components/schemas/Playlist"
 
-  # Would like to offer a few different Oauth2 methods:
-  #   - Self-hosted and handled by snagem
-  #   - GitHub
-  #   - GitLab?
-  #   - Google
+  # Would like to offer a few different auth methods:
+  #   - Traditional user/password
+  #   - GitHub Oauth2
+  #   - GitLab Oauth2?
+  #   - Google Oauth2
   #   - Something else?
   /auth:
 
@@ -158,16 +158,3 @@ endpoints:
             application/json:
               schema:
                 type: object
-
-  /settings/roles:
-    get:
-      description: Returns all roles the current user has access to
-      responses:
-        "200":
-          description: "A list of roles"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Roles"
