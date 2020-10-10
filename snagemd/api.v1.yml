@@ -1,43 +1,115 @@
 # Snagem API v1 Specification
 # http://spec.openapis.org/oas/v3.0.3
-
 #
-# /library
-#
+# Please note that this is a work-in-progress which is likely to change
+# drastically as well as without warning. This notice will be removed once this
+# is no longer the case.
 
-library:
-  # /library/search
-  # /library/search?query=%s
-  search:
-    # /library/search?authors=%s
-    authors: List[str]
-    domain: str
-    format: Dict[Any, Any]
-    length: str
-    name: str
-    query: str
-    size: str
+components:
+  schemas:
+    Media:
+      type: object
+      required:
+        - mediaType
+      properties:
+        mediaType:
+          type: string
 
-#
-# /queue
-#
+    Audio:
+      allOf:
+        - $ref: "#components/schemas/Media"
+        - type: object
+          properties:
+            duration:
+              type: integer
+            format:
+              type: string
+            language:
+              type: string
+            lyrics:
+              type: string
+            name:
+              type: string
+            size:
+              type: string
+            source:
+              type: string
+            tags:
+              type: array
 
-queue:
-  search:
-    filters:
-      authors: List[str]
-      domain: str
-      format: Dict[Any, Any]
-      length: str
-      name: str
-      size: str
-    query: List[str]
+    Video:
+      allOf:
+        - $ref: "#components/schemas/Media"
+        - type: object
+          properties:
+            duration:
+              type: integer
+            format:
+              type: string
+            language:
+              type: string
+            name:
+              type: string
+            size:
+              type: string
+            source:
+              type: string
+            subtitles:
+              type: array
+            tags:
+              type: array
 
-#
-# /settings
-#
+routes:
+  /:
+    get:
+      description: >-
+        Returns all routes the user has access to
+      responses:
+        "200":
+          description: "An object of routes"
+          content:
+            application/json:
+              schema:
+                type: object
 
-settings:
-  format:
-    audio:
-    video:
+  /library:
+    get:
+      description: >-
+        Returns all media from the library the user has access to
+      responses:
+        "200":
+          description: "A list of media"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Media"
+
+  /library/{user_id}:
+    get:
+      description: >-
+        Returns all media from the library of {user_id} the user has access to
+      responses:
+        "200":
+          description: "A list of media"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Media"
+
+  /library/{user_id}/{playlist_id}:
+    get:
+      description: >-
+        Returns all media from the {playlist_id} by {user_id} the user has access to
+      responses:
+        "200":
+          description: "A list of media"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Media"
