@@ -145,15 +145,70 @@ endpoints:
   #   - GitHub Oauth2
   #   - GitLab Oauth2?
   #   - Google Oauth2
-  #   - Something else?
+  #   - etc
   /auth:
 
+  # What sort of metrics should be displayed?
+  #   - A way to disable collecting arbitrary metrics, or all metrics
+  #   - hourly/daily/weekly/monthly/yearly timelines?
+  #   - etc
+  /metrics:
+
+  # The exact mechanics of accessing/updating settings need to be worked out.
   /settings:
     get:
-      description: Returns all settings the current user has access to
+      description: placeholder
       responses:
         "200":
-          description: "An object of current settings"
+          description: placeholder
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # Allow admins to control media settings:
+  #   - Default format(s)
+  #   - Min/Max resolution
+  #   - Maximum file size
+  #   - etc
+  /settings/media:
+    get:
+      description: placeholder
+      responses:
+        "200":
+          description: placeholder
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # Allow admins to control metadata settings:
+  #   - Enable/Disable all metrics
+  #   - Enable/Disable specific metric(s)
+  #   - Public/private specific metric(s)
+  #   - etc
+  /settings/metrics:
+    get:
+      description: placeholder
+      responses:
+        "200":
+          description: placeholder
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # Need to be able to adjust per-user or all-user settings like:
+  #   - Quotas
+  #   - Rate Limiting
+  #   - Source domain restrictions (is use can only save from YouTube, etc)
+  #   - etc
+  /settings/users:
+    get:
+      description: placeholder
+      responses:
+        "200":
+          description: placeholder
           content:
             application/json:
               schema:
