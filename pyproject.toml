@@ -14,6 +14,7 @@ packages = [{ include = "snagemctl" }, { include = "snagemd" }]
 
 [tool.poetry.dependencies]
 python = "^3.6"
+alembic = "^1.4"
 boto3 = "^1.15"
 celery = { version = "^5.0", extras = ["sqlalchemy"] }
 click = "^7.1"
@@ -43,8 +44,8 @@ extras = [
 version = "^0.35"
 
 [tool.poetry.scripts]
-snagemctl = "snagemctl.main:main"
-snagemd = "snagemd.main:main"
+snagemctl = "snagemctl.snagemctl:main"
+snagemd = "snagemd.snagemd:main"
 
 #
 # Extras
@@ -122,8 +123,7 @@ commands =
 [testenv:mypy]
 whitelist_externals = poetry
 commands =
-    poetry run mypy snagemctl/
-    poetry run mypy snagemd/
+    poetry run mypy snagemctl/ snagemd/
 
 [testenv:pytest]
 whitelist_externals = poetry
