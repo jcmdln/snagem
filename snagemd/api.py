@@ -6,7 +6,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
-class Media(BaseModel):
+class Media(BaseModel):  # type: ignore
     duration: int
     encoding: str
     language: str
@@ -16,12 +16,12 @@ class Media(BaseModel):
     tags: List[str]
 
 
-class Playlist(BaseModel):
+class Playlist(BaseModel):  # type: ignore
     name: str
     tags: List[str]
 
 
-class Settings(BaseModel):
+class Settings(BaseModel):  # type: ignore
     domains_allow: Optional[List[str]]
     domains_deny: Optional[List[str]]
     encoding_audio: Optional[Dict[Any, Any]]
@@ -30,35 +30,35 @@ class Settings(BaseModel):
     quotas: Optional[int]
 
 
-class Sources(BaseModel):
+class Sources(BaseModel):  # type: ignore
     name: Optional[str]
     url: str
 
 
 @app.get("/")
-def media_list():
+def media_list() -> Dict[Any, Any]:
     return {"Hello": "World"}
 
 
 @app.get("/{media_id}")
-def media_info(media_id: int, q: Optional[str] = None):
+def media_info(media_id: int, q: Optional[str] = None) -> Dict[Any, Any]:
     return {"media_id": media_id, "q": q}
 
 
 @app.put("/{media_id}")
-def media_update(media_id: int, media: Media):
+def media_update(media_id: int, media: Media) -> Dict[Any, Any]:
     return {"media_name": media.name, "media_id": media_id}
 
 
 @app.get("/sources")
-def sources_list():
+def sources_list() -> Dict[Any, Any]:
     return {"": ""}
 
 
 @app.post("/sources/add")
 def sources_add(
     source_name: Optional[str] = Form(None), source_url: str = Form(...)
-):
+) -> Dict[Any, Any]:
     """
     Add the `source_url` of a supported media type to track and retrieve.
 
@@ -74,5 +74,5 @@ def sources_add(
 
 
 @app.delete("/sources/remove")
-def sources_remove(source_id: int, source: Sources):
+def sources_remove(source_id: int, source: Sources) -> Dict[Any, Any]:
     return {"source_name": source.name, "source_id": source_id}

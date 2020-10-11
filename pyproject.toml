@@ -29,7 +29,6 @@ coverage = "^5.3"
 flake8 = "^3.8"
 mypy = "^0.790"
 pydocstyle = "^5.1"
-pylint = "^2.6"
 pyls-black = "^0.4"
 pytest = "^6.1"
 sphinx = "^3.2"
@@ -99,34 +98,34 @@ commands =
 [testenv:bandit]
 whitelist_externals = poetry
 commands =
-    poetry run bandit --verbose snagemctl/ snagemd/
+    poetry run bandit --quiet -r snagemctl/ snagemd/
 
 [testenv:black]
 whitelist_externals = poetry
 commands =
-    poetry run black --verbose snagemctl/ snagemd/
+    poetry run black --quiet snagemctl/ snagemd/
 
 [testenv:coverage]
 whitelist_externals = poetry
 commands =
-    poetry run coverage --verbose snagemctl/ snagemd/
+    poetry run coverage snagemctl/ snagemd/
 
 [testenv:dependency]
 whitelist_externals = poetry
 commands =
     poetry install --verbose
-    poetry run snagemctl
-    poetry run snagemd
+    poetry run snagemctl --help
+    poetry run snagemd --help
 
 [testenv:flake8]
 whitelist_externals = poetry
 commands =
-    poetry run flake8 --verbose snagemctl/ snagemd/
+    poetry run flake8 --quiet snagemctl/ snagemd/
 
 [testenv:mypy]
 whitelist_externals = poetry
 commands =
-    poetry run mypy --verbose snagemctl/ snagemd/
+    poetry run mypy snagemctl/ snagemd/
 
 [testenv:pytest]
 whitelist_externals = poetry
