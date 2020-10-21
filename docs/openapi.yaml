@@ -29,7 +29,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GeneralError'
+            $ref: "#/components/schemas/GeneralError"
     IllegalInput:
       description:
     NotFound:

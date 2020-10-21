@@ -5,9 +5,7 @@ import youtube_dl
 
 
 class Audio:
-    """
-    Middleware for extracting audio from a URL.
-    """
+    """Middleware for extracting audio from a URL."""
 
     def __init__(self) -> None:
         self.__config: Dict[Any, Any] = {
@@ -29,10 +27,7 @@ class Audio:
         }
 
     def get(self, urls: List[str]) -> None:
-        """
-        Download audio from URLs in the best available quality.
-        """
-
+        """Download audio from URLs in the best available quality."""
         index: int = 1
         length: int = len(urls)
         size: str = ""
@@ -65,27 +60,19 @@ class Audio:
             index += 1
 
     def options(self, config: Dict[Any, Any]) -> None:
-        """
-        Set custom options
-        """
-
+        """Set custom options."""
         if config:
             self.__config = config
 
 
 class Info:
-    """
-    Middleware for collecting info about the media at a URL.
-    """
+    """Middleware for collecting info about the media at a URL."""
 
-    def __init__(self) -> None:
+    def __init__(self) -> None:  # noqa: D107
         self.data: Dict[Any, Any] = {}
 
     def __gather(self, i: Dict[Any, Any]) -> None:
-        """
-        Gather the extracted information and add it to data{}.
-        """
-
+        """Gather the extracted information and add it to data{}."""
         if i["uploader_id"] not in self.data:
             self.data[i["uploader_id"]] = {}
 
@@ -100,9 +87,7 @@ class Info:
         }
 
     def get(self, urls: List[str]) -> None:
-        """
-        Triage the data extracted by youtube_dl
-        """
+        """Triage the data extracted by youtube_dl."""
         info: Dict[Any, Any] = {}
         ydl: youtube_dl.YoutubeDL = youtube_dl.YoutubeDL(
             {"no_warnings": True, "quiet": True}
@@ -132,7 +117,7 @@ class Info:
 
 
 class Video:
-    """"""
+    """Video."""
 
     def __init__(self) -> None:
         self.__config: Dict[Any, Any] = {
@@ -165,10 +150,7 @@ class Video:
         }
 
     def get(self, urls: List[str]) -> None:
-        """
-        Download video from URLs in the best available quality.
-        """
-
+        """Download video from URLs in the best available quality."""
         index: int = 1
         info: Dict[Any, Any] = {}
         length: int = len(urls)
@@ -202,9 +184,6 @@ class Video:
             index += 1
 
     def options(self, config: Dict[Any, Any]) -> None:
-        """
-        Set custom options
-        """
-
+        """Set custom options."""
         if config:
             self.__config = config
