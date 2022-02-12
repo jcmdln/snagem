@@ -1,7 +1,11 @@
-from humanfriendly import format_size, format_timespan
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 from os import cpu_count
 from typing import Any, Dict, List
+
 import youtube_dl
+
+from humanfriendly import format_size, format_timespan
 
 
 class Audio:

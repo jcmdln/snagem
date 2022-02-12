@@ -1,23 +1,49 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 {
-    "search.exclude": {
-        "**/__pycache__/**": true,
-        "**/.mypy_cache/**": true,
-        "**/.tox/**": true,
-        "**/.venv/**": true,
-    },
-    "files.watcherExclude": {
-        "**/__pycache__/**": true,
-        "**/.mypy_cache/**": true,
-        "**/.tox/**": true,
-        "**/.venv/**": true,
-    },
-    "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.linting.banditEnabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.pycodestyleEnabled": true,
-    "python.linting.pydocstyleEnabled": true,
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
-    "python.venvPath": "${workspaceFolder}/.venv",
+  // Hide these directories in the Explorer, and exclude from search
+  "files.exclude": {
+    "**/__pycache__/**": true,
+    "**/.mypy_cache/**": true,
+    "**/.pytest_cache/**": true,
+    "**/.tox/**": true,
+    "**/.venv/**": true,
+  },
+  // Don't watch for file changes in these directories
+  "files.watcherExclude": {
+    "**/__pycache__/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.mypy_cache/**": true,
+    "**/.pytest_cache/**": true,
+    "**/.tox/**": true,
+    "**/.venv/**": true,
+  },
+  // Format files on save
+  "editor.formatOnSave": true,
+  // Set global wordwrap to 99 columns
+  "editor.wordWrapColumn": 99,
+  // Don't automatically collapse arrays in toml files
+  "evenBetterToml.formatter.arrayAutoCollapse": false,
+  // Use black as our default python formatter
+  "python.formatting.provider": "black",
+  // Enable linting using various tools
+  "python.linting.enabled": true,
+  "python.linting.banditEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  // flake8 already provides pycodestyle and pydocstyle warnings/errors
+  "python.linting.pycodestyleEnabled": false,
+  "python.linting.pydocstyleEnabled": false,
+  // Sort python imports on save
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  // Define specific yaml schemas where VSCode does the wrong thing
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [
+      "${workspaceFolder}/.github/workflows/*.yml"
+    ]
+  },
 }
