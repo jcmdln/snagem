@@ -3,35 +3,31 @@
 # Ignore everything
 *
 
+# Allow traversing directories
+!**/
+
 # Include these specific files
+!.bandit.yml
 !.dockerignore
 !.editorconfig
 !.gitignore
+!alembic.ini
 !Dockerfile
 !LICENSE.md
-!README.md
 !poetry.lock
 !poetry.toml
 !pyproject.toml
+!README.md
 
 # Include GitHub Actions pipeline configuration
-!.github/
-!.github/workflows/
 !.github/workflows/*.yml
 
 # Include our VS Code configuration
-!.vscode/
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# Allow searching in and traversing specific directories
-!docs/
-!docs/**
-!snagctl/
-!snagctl/**
-!snagd/
-!snagd/**
-
 # Include these files from any included directory.
+!**/README
 !**/*.py
+!**/*.mako
 !**/*.md

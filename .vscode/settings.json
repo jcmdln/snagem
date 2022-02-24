@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 {
+  // Associate files with languages when VSCode gets it wrong
+  "files.associations": {
+    // Ensure .dockerignore files in any subdir use .gitignore style
+    "**/.dockerignore": "ignore",
+  },
   // Hide these directories in the Explorer, and exclude from search
   "files.exclude": {
     "**/__pycache__/**": true,
@@ -34,7 +39,7 @@
   // flake8 already provides pycodestyle and pydocstyle warnings/errors
   "python.linting.pycodestyleEnabled": false,
   "python.linting.pydocstyleEnabled": false,
-  // Sort python imports on save
+  // Sort python imports on save using isort
   "[python]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": true

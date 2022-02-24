@@ -7,6 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE="true" \
     VIRTUALENV="/opt/.venv"
 RUN dnf --refresh upgrade -y && \
     dnf install -y openssl postgresql python3 tzdata && \
+    dnf autoremove -y && \
     dnf clean all
 RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 

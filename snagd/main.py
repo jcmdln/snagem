@@ -3,24 +3,13 @@
 import logging
 
 from importlib.metadata import version
+from sys import exit
 
 import click
-import uvicorn
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from uvicorn import run as uvicorn_run
 
-from snagd.api import router
-
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True,
-)
-app.include_router(router)
+from snagd import app
 
 
 @click.command(name="snagd")
@@ -28,6 +17,8 @@ app.include_router(router)
 @click.option("--host", default="127.0.0.1")
 @click.option("--port", default=5050)
 def main(host: str, log_level: str, port: int) -> None:
+    """Snagd main."""
+
     log = logging.getLogger("snagd")
 
     log.info("snagd v{}".format(version("snagem")))
@@ -38,7 +29,9 @@ def main(host: str, log_level: str, port: int) -> None:
     log.debug("port: {}".format(port))
 
     log.info("Starting uvicorn...")
-    uvicorn.run(app=app, host=host, port=port, log_level=log_level)
+    uvicorn_run(app=app, host=host, port=port, log_level=log_level)
+
+    exit(0)
 
 
 if __name__ == "__main__":

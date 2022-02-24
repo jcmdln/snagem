@@ -13,9 +13,7 @@ def sources_list() -> dict:
 
 
 @router.post("/sources/add")
-def sources_add(
-    source_name: str | None = Form(None), source_url: str = Form(...)
-) -> dict:
+def sources_add(source_name: str | None = Form(None), source_url: str = Form(...)) -> dict:
     """
     Add the `source_url` of a supported media type to track and retrieve.
 
