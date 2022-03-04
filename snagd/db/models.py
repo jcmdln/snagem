@@ -1,14 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 from sqlalchemy import Column, DateTime, Integer, String
 
-from snagd.db.session import Base
+from snagd.db import session
 
 
-class Media(Base):  # type: ignore
-    """Media model."""
-
+class Media(session.Base):
     categories: Column[String]
     date_created: Column[DateTime]
     date_updated: Column[DateTime]
