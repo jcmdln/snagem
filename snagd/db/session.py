@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from os import getenv
+from typing import Optional
 
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.engine.base import Engine
@@ -12,12 +13,12 @@ from sqlalchemy.orm import sessionmaker
 from snagd.db import log
 
 db_args: dict = {}
-db_host: str | None = getenv("DB_HOST")
-db_name: str | None = getenv("DB_NAME")
-db_pass: str | None = getenv("DB_PASS")
-db_port: str | None = getenv("DB_PORT")
-db_type: str | None = getenv("DB_TYPE")
-db_user: str | None = getenv("DB_USER")
+db_host: Optional[str] = getenv("DB_HOST")
+db_name: Optional[str] = getenv("DB_NAME")
+db_pass: Optional[str] = getenv("DB_PASS")
+db_port: Optional[str] = getenv("DB_PORT", "5432")
+db_proto: Optional[str] = getenv("DB_PROTO", "postgresql+psycopg")
+db_user: Optional[str] = getenv("DB_USER")
 
 if db_type and "postgres" in db_type.lower():
     if not db_host:
