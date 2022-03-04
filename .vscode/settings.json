@@ -27,8 +27,10 @@
   "editor.formatOnSave": true,
   // Set global wordwrap to 99 columns
   "editor.wordWrapColumn": 99,
-  // Don't automatically collapse arrays in toml files
-  "evenBetterToml.formatter.arrayAutoCollapse": false,
+  // Set toml columnWidth
+  "evenBetterToml.formatter.columnWidth": 99,
+  // Automatically sort keys in toml files
+  "evenBetterToml.formatter.reorderKeys": true,
   // Use black as our default python formatter
   "python.formatting.provider": "black",
   // Enable linting using various tools
