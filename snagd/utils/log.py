@@ -3,17 +3,17 @@
 from logging import DEBUG, FileHandler, Formatter, Logger, StreamHandler, getLogger
 
 
-def Log(title: str, filename: str) -> Logger:
+def Log(title: str, filename: str | None = None) -> Logger:
     """Logging wrapper."""
 
     log: Logger = getLogger("snagd: {}".format(title))
-    logfile: str = "/var/log/{}.log".format(filename)
 
+    if filename:
     try:
-        with open(logfile, "w+") as fd:
+            with open(filename, "w+") as fd:
             fd.close()
     except Exception:
-        logfile = "{}.log".format(filename)
+            filename = "{}.log".format(filename)
 
     log.propagate = False
     log.setLevel(DEBUG)
@@ -27,7 +27,8 @@ def Log(title: str, filename: str) -> Logger:
         sh.setFormatter(f)
         log.addHandler(sh)
 
-        fh = FileHandler(logfile)
+        if filename:
+            fh = FileHandler(filename)
         fh.setFormatter(f)
         log.addHandler(fh)
 
