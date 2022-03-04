@@ -8,8 +8,6 @@ from pydantic import BaseModel
 
 
 class Media(BaseModel):
-    """Media schema."""
-
     source_url: str
     date_created: datetime
     duration: int
@@ -25,8 +23,6 @@ class Media(BaseModel):
 
 
 class MediaCreate(BaseModel):
-    """MediaCreate schema."""
-
     source_url: str
 
     categories: list[str] | None
@@ -36,15 +32,7 @@ class MediaCreate(BaseModel):
     title: str | None
 
 
-class MediaDelete(BaseModel):
-    """MediaDelete schema."""
-
-    uuid: str
-
-
 class MediaUpdate(BaseModel):
-    """MediaUpdate schema."""
-
     categories: list[str] | None
     description: str | None
     duration: int | None
