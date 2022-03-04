@@ -9,10 +9,10 @@ def Log(title: str, filename: str | None = None) -> Logger:
     log: Logger = getLogger("snagd: {}".format(title))
 
     if filename:
-    try:
+        try:
             with open(filename, "w+") as fd:
-            fd.close()
-    except Exception:
+                fd.close()
+        except Exception:
             filename = "{}.log".format(filename)
 
     log.propagate = False
@@ -29,7 +29,10 @@ def Log(title: str, filename: str | None = None) -> Logger:
 
         if filename:
             fh = FileHandler(filename)
-        fh.setFormatter(f)
-        log.addHandler(fh)
+            fh.setFormatter(f)
+            log.addHandler(fh)
 
     return log
+
+
+__all__: list[str] = ["Log", "Logger"]
