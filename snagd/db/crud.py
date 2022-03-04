@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from snagd.db import models, schemas, session
+from snagd.db import model, schema, session
 
 ModelType = TypeVar("ModelType", bound=session.Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -61,8 +61,8 @@ class Base(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
 
-class Media(Base[models.Media, schemas.MediaCreate, schemas.MediaUpdate]):
+class Media(Base[model.Media, schema.MediaCreate, schema.MediaUpdate]):
     pass
 
 
-media = Media(models.Media)
+media = Media(model.Media)

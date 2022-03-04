@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Generator
 
-from snagd.db import models, schemas
+from snagd.db import crud, model, schema
 from snagd.db.session import SessionLocal
 from snagd.utils import Log, Logger
 
@@ -21,4 +21,4 @@ def get_db() -> Generator:
         db.close()
 
 
-__all__: list[str] = ["Base", "SessionLocal", "get_db", "models", "schemas"]
+__all__: list[str] = ["crud", "get_db", "model", "schema"]
