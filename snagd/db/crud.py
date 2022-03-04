@@ -2,84 +2,67 @@
 
 import uuid
 
-from typing import Generic, TypeVar
+from typing import Generic, Optional, Type, TypeVar
 
-from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from snagd.db import models, schemas
+from snagd.db import models, schemas, session
 
-MediaSchemaType = TypeVar("MediaSchemaType", bound=schemas.Media)
-MediaCreateSchemaType = TypeVar("MediaCreateSchemaType", bound=schemas.MediaCreate)
-MediaDeleteSchemaType = TypeVar("MediaDeleteSchemaType", bound=schemas.MediaDelete)
-MediaUpdateSchemaType = TypeVar("MediaUpdateSchemaType", bound=schemas.MediaUpdate)
+ModelType = TypeVar("ModelType", bound=session.Base)
+CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
+UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
-class Media(
-    Generic[MediaSchemaType, MediaCreateSchemaType, MediaDeleteSchemaType, MediaUpdateSchemaType]
-):
-    """Media CRUD."""
-
-    def __init__(self, db: Session, model: MediaSchemaType) -> None:
-        self.db_session = db
+class Base(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+    def __init__(self, model: Type[ModelType]):
         self.model = model
 
-    def create(self, media: schemas.MediaCreate) -> MediaSchemaType:
-        """Create Media."""
+    def create(self, db: Session, obj: CreateSchemaType) -> Optional[ModelType]:
+        obj_data = jsonable_encoder(obj)
+        db_obj: ModelType = self.model(**obj_data)
 
-        new_media = models.Media(
-            categories=media.categories,
-            description=media.description,
-            duration=media.duration,
-            source_url=media.source_url,
-            tags=media.tags,
-            title=media.title,
-            uuid=uuid.UUID(),
-        )
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
 
-        self.db_session.add(new_media)
-        self.db_session.commit()
-        self.db_session.refresh(new_media)
+        return db_obj
 
-        return new_media
+    def get(self, db: Session, uuid: uuid.UUID) -> Optional[ModelType]:
+        result: ModelType = db.query(self.model).filter(self.model.uuid == uuid).first()
+        return result
 
-    def delete(self, media: schemas.MediaDelete) -> MediaSchemaType:
-        """Delete media."""
+    def remove(self, db: Session, uuid: uuid.UUID) -> Optional[ModelType]:
+        obj: Optional[ModelType] = db.query(self.model).get(uuid)
 
-        del_media: models.Media | None = (
-            self.db_session.query(self.model).filter(models.Media.uuid == media.uuid).first()
-        )
+        if obj:
+            db.delete(obj)
+            db.commit()
 
-        if not del_media:
-            raise HTTPException(status_code=404, detail="media not found: {}".format(media))
+        return obj
 
-        self.db_session.delete(del_media)
-        self.db_session.commit()
+    def update(self, db: Session, db_obj: ModelType, obj: UpdateSchemaType) -> Optional[ModelType]:
+        obj_data = jsonable_encoder(db_obj)
 
-        return del_media
-
-    def read(self, media: schemas.Media) -> models.Media:
-        """Read media."""
-
-        pass
-
-    def update(self, media: schemas.MediaUpdate) -> MediaSchemaType:
-        """Update media."""
-
-        obj_data = jsonable_encoder(self.model)
-
-        if isinstance(media, dict):
-            update_data = media
+        if isinstance(obj, dict):
+            update_data = obj
         else:
-            update_data = media.dict(exclude_unset=True)
+            update_data = obj.dict(exclude_unset=True)
 
         for field in obj_data:
             if field in update_data:
-                setattr(self.model, field, update_data[field])
+                setattr(db_obj, field, update_data[field])
 
-        self.db_session.add(self.model)
-        self.db_session.commit()
-        self.db_session.refresh(self.model)
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
 
-        return self.model
+        return db_obj
+
+
+class Media(Base[models.Media, schemas.MediaCreate, schemas.MediaUpdate]):
+    pass
+
+
+media = Media(models.Media)
