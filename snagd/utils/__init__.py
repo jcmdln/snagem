@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from utils.log import Log, Logger
+from snagd.utils.log import Log, Logger
 
 __all__: list[str] = ["Log", "Logger"]
