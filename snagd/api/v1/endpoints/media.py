@@ -2,21 +2,37 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
-from fastapi import APIRouter, Form
+from fastapi import APIRouter
 
 router = APIRouter()
 
 
 @router.get("/media")
-def media_list() -> dict:
+def media() -> dict:
     return {"": ""}
 
 
+@router.get("/media/{uuid}")
+def media_info(uuid: str) -> dict:
+    return {"uuid": uuid}
+
+
 @router.post("/media/add")
-def media_add(media_name: Optional[str] = Form(None), media_url: str = Form(...)) -> dict:
+def media_add(source_url: str) -> dict:
     return {
-        "name": media_name,
-        "url": media_url,
+        "url": source_url,
+    }
+
+
+@router.delete("/media/remove")
+def media_remove(uuid: str) -> dict:
+    return {
+        "uuid": uuid,
+    }
+
+
+@router.put("/media/update")
+def media_update(uuid: str) -> dict:
+    return {
+        "uuid": uuid,
     }
