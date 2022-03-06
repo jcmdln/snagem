@@ -7,7 +7,7 @@
 !**/
 
 # Include these specific files
-!.bandit.yaml
+!.bandit.yml
 !.dockerignore
 !.editorconfig
 !.gitignore
