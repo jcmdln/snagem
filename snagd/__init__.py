@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from snagd import api, db, snag
 from snagd.api import router
 
-app = FastAPI()
+app = FastAPI(docs_url="/", redoc_url=None, title="Snagem")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
