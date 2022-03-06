@@ -7,7 +7,7 @@
 !**/
 
 # Include these specific files
-!.bandit.yml
+!.bandit.yaml
 !.dockerignore
 !.editorconfig
 !.gitignore
@@ -19,15 +19,24 @@
 !pyproject.toml
 !README.md
 
-# Include GitHub Actions pipeline configuration
-!.github/workflows/*.yml
+# Include specific files from specific directories
+!.github/workflows/*.yaml
 
-# Include our VS Code configuration
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# Include these files from any included directory.
-!**/README
-!**/*.py
-!**/*.mako
-!**/*.md
+!docs/
+!docs/**/
+!docs/**/*.md
+!docs/**/*.yaml
+
+!snagctl/
+!snagctl/**/
+!snagctl/**/*.md
+!snagctl/**/*.py
+
+!snagd/
+!snagd/**/
+!snagd/**/*.md
+!snagd/**/*.py
+!snagd/db/script.py.mako

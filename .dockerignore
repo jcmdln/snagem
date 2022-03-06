@@ -4,17 +4,21 @@
 *
 
 # Include these specific files
+!alembic.ini
 !LICENSE.md
-!README.md
 !poetry.lock
 !poetry.toml
 !pyproject.toml
+!README.md
 
-# Allow searching in and traversing specific directories
+# Include specific files from directories
 !snagctl/
-!snagctl/**
-!snagd/
-!snagd/**
+!snagctl/**/
+!snagctl/**/*.md
+!snagctl/**/*.py
 
-# Include these files from any included directory.
-!**/*.py
+!snagd/
+!snagd/**/
+!snagd/**/*.md
+!snagd/**/*.py
+!snagd/db/script.py.mako
