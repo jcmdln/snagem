@@ -13,6 +13,6 @@ trim_trailing_whitespace = true
 indent_size = 2
 tab_width = 2
 
-[*.y{,a}ml]
+[*.yaml]
 indent_size = 2
 tab_width = 2
