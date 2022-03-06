@@ -1,21 +1,20 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
-import uuid
-
 from typing import Generic, Optional, Type, TypeVar
+from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from snagd.db import model, schema, session
+from snagd.db import session
 
 ModelType = TypeVar("ModelType", bound=session.Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
+DeleteSchemaType = TypeVar("DeleteSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
-class Base(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+class Base(Generic[ModelType, CreateSchemaType, DeleteSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
 
@@ -29,18 +28,18 @@ class Base(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         return db_obj
 
-    def get(self, db: Session, uuid: uuid.UUID) -> Optional[ModelType]:
-        result: ModelType = db.query(self.model).filter(self.model.uuid == uuid).first()
-        return result
-
-    def remove(self, db: Session, uuid: uuid.UUID) -> Optional[ModelType]:
-        obj: Optional[ModelType] = db.query(self.model).get(uuid)
+    def delete(self, db: Session, obj: DeleteSchemaType) -> Optional[ModelType]:
+        obj_data: Optional[ModelType] = db.query(self.model).get(obj)
 
         if obj:
-            db.delete(obj)
+            db.delete(obj_data)
             db.commit()
 
-        return obj
+        return obj_data
+
+    def get(self, db: Session, uuid: UUID) -> Optional[ModelType]:
+        result: ModelType = db.query(self.model).filter(self.model.uuid == uuid).first()
+        return result
 
     def update(self, db: Session, db_obj: ModelType, obj: UpdateSchemaType) -> Optional[ModelType]:
         obj_data = jsonable_encoder(db_obj)
@@ -61,8 +60,4 @@ class Base(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
 
-class Media(Base[model.Media, schema.MediaCreate, schema.MediaUpdate]):
-    pass
-
-
-media = Media(model.Media)
+__all__: list[str] = ["Base"]
