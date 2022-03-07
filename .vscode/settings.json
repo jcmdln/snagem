@@ -25,6 +25,8 @@
   },
   // Format files on save
   "editor.formatOnSave": true,
+  // Set editor minimap to 99 columns
+  "editor.minimap.maxColumn": 99,
   // Set global wordwrap to 99 columns
   "editor.wordWrapColumn": 99,
   // Set toml columnWidth
