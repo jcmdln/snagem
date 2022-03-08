@@ -13,16 +13,6 @@
     "**/.tox/**": true,
     "**/.venv/**": true,
   },
-  // Don't watch for file changes in these directories
-  "files.watcherExclude": {
-    "**/__pycache__/**": true,
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/.mypy_cache/**": true,
-    "**/.pytest_cache/**": true,
-    "**/.tox/**": true,
-    "**/.venv/**": true,
-  },
   // Format files on save
   "editor.formatOnSave": true,
   // Set editor minimap to 99 columns
