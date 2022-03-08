@@ -9,23 +9,22 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-db_args: dict = {}
-db_proto: str = getenv("DB_PROTO", "sqlite")
-db_uri: str = ""
+db_scheme: str = getenv("SNAGEM_DB_SCHEME", "sqlite")
+db_user: str = getenv("SNAGEM_DB_USER", "")
+db_pass: str = getenv("SNAGEM_DB_PASS", "")
+db_host: str = getenv("SNAGEM_DB_HOST", "")
+db_port: str = getenv("SNAGEM_DB_PORT", "")
+db_path: str = getenv("SNAGEM_DB_PATH", "")
 
-if "sqlite" in db_proto.lower():
-    db_args = {"connect_args": {"check_same_thread": False}, "poolclass": StaticPool}
-    db_uri = "sqlite:///snagd.db"
-elif "postgres" in db_proto.lower():
-    db_uri = "postgres+psycopg://{}:{}@{}:{}".format(
-        getenv("DB_USER"), getenv("DB_PASS"), getenv("DB_HOST"), getenv("DB_PORT")
-    )
+if "sqlite" in db_scheme.lower():
+    db_args: dict = {"connect_args": {"check_same_thread": False}, "poolclass": StaticPool}
+    db_url = f"{db_scheme}://{db_path}"
 else:
-    print("error: Unknown database backend! Exiting...")
-    exit(1)
+    db_args = {}
+    db_url = f"{db_scheme}://{db_user}:{db_pass}@{db_host}:{db_port}"
 
 SessionLocal: sessionmaker = sessionmaker(
-    autocommit=False, autoflush=False, bind=create_engine(db_uri, connect_args=db_args)
+    autocommit=False, autoflush=False, bind=create_engine(db_url, connect_args=db_args)
 )
 
 
@@ -41,4 +40,4 @@ class Base(DeclarativeMeta):
     )
 
 
-__all__: list[str] = ["Base", "SessionLocal"]
+__all__: list[str] = ["Base", "SessionLocal", "db_url"]
