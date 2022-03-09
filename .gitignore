@@ -39,4 +39,4 @@
 !snagd/**/
 !snagd/**/*.md
 !snagd/**/*.py
-!snagd/db/script.py.mako
+!snagd/db/alembic/script.py.mako
