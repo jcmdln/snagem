@@ -9,26 +9,11 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class Media(BaseModel):
-    categories: list[str]
-    date_created: datetime
-    date_updated: datetime
-    description: str
-    duration: int
-    source_url: str
-    subtitles: list[str]
-    tags: list[str]
-    title: str
-    uuid: str
-    views: int
-
-
 class Create(BaseModel):
     source_url: str
 
     categories: Optional[list[str]]
     description: Optional[str]
-    duration: Optional[int]
     tags: Optional[list[str]]
     title: Optional[str]
 
@@ -40,12 +25,18 @@ class Delete(BaseModel):
 class Update(BaseModel):
     categories: Optional[list[str]]
     description: Optional[str]
-    duration: Optional[int]
     source_url: Optional[str]
     subtitles: Optional[list[str]]
     tags: Optional[list[str]]
     title: Optional[str]
-    views: Optional[int]
 
 
-__all__: list[str] = ["Media", "Create", "Delete", "Update"]
+class Base(Create, Delete, Update):
+    date_created: datetime
+    date_updated: datetime
+    duration: int
+    source_url: str
+    views: int
+
+
+__all__: list[str] = ["Base", "Create", "Delete", "Update"]
