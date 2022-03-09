@@ -18,5 +18,4 @@ app.add_middleware(
 )
 app.include_router(router)
 
-
 __all__: list[str] = ["api", "app", "db", "snag"]
