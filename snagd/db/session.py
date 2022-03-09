@@ -5,7 +5,7 @@ from __future__ import annotations
 from os import getenv
 
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -27,9 +27,8 @@ SessionLocal: sessionmaker = sessionmaker(
     autocommit=False, autoflush=False, bind=create_engine(db_url, connect_args=db_args)
 )
 
-
-class Base(DeclarativeMeta):
-    metadata = MetaData(
+Base = declarative_base(
+    metadata=MetaData(
         naming_convention={
             "ix": "ix_%(column_0_label)s",
             "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -38,6 +37,6 @@ class Base(DeclarativeMeta):
             "pk": "pk_%(table_name)s",
         }
     )
-
+)
 
 __all__: list[str] = ["Base", "SessionLocal", "db_url"]

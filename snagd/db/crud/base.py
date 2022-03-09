@@ -8,19 +8,26 @@ from sqlalchemy.orm import Session
 
 from snagd.db import session
 
-ModelType = TypeVar("ModelType", bound=session.Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
-DeleteSchemaType = TypeVar("DeleteSchemaType", bound=BaseModel)
-UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
+Model = TypeVar("Model", bound=session.Base)
+CreateSchema = TypeVar("CreateSchema", bound=BaseModel)
+DeleteSchema = TypeVar("DeleteSchema", bound=BaseModel)
+UpdateSchema = TypeVar("UpdateSchema", bound=BaseModel)
 
 
-class Base(Generic[ModelType, CreateSchemaType, DeleteSchemaType, UpdateSchemaType]):
-    def __init__(self, model: Type[ModelType]):
+class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
+    def __init__(self, model: Type[Model]):
         self.model = model
 
-    def create(self, db: Session, obj: CreateSchemaType) -> Optional[ModelType]:
+    def get(self, db: Session, uuid: UUID) -> Optional[Model]:
+        return db.query(self.model).filter(self.model.uuid == uuid).first()
+
+    #
+    # CRUD
+    #
+
+    def create(self, db: Session, obj: CreateSchema) -> Optional[Model]:
         obj_data = jsonable_encoder(obj)
-        db_obj: ModelType = self.model(**obj_data)
+        db_obj: Model = self.model(**obj_data)
 
         db.add(db_obj)
         db.commit()
@@ -28,8 +35,8 @@ class Base(Generic[ModelType, CreateSchemaType, DeleteSchemaType, UpdateSchemaTy
 
         return db_obj
 
-    def delete(self, db: Session, obj: DeleteSchemaType) -> Optional[ModelType]:
-        obj_data: Optional[ModelType] = db.query(self.model).get(obj)
+    def delete(self, db: Session, obj: DeleteSchema) -> Optional[Model]:
+        obj_data: Optional[Model] = db.query(self.model).get(obj)
 
         if obj:
             db.delete(obj_data)
@@ -37,25 +44,18 @@ class Base(Generic[ModelType, CreateSchemaType, DeleteSchemaType, UpdateSchemaTy
 
         return obj_data
 
-    def get(self, db: Session, uuid: UUID) -> Optional[ModelType]:
-        result: ModelType = db.query(self.model).filter(self.model.uuid == uuid).first()
-        return result
-
-    def update(self, db: Session, db_obj: ModelType, obj: UpdateSchemaType) -> Optional[ModelType]:
-        obj_data = jsonable_encoder(db_obj)
-
-        if isinstance(obj, dict):
-            update_data = obj
-        else:
-            update_data = obj.dict(exclude_unset=True)
-
+    def update(self, db: Session, obj: UpdateSchema) -> Optional[Model]:
+        obj_data = jsonable_encoder(self.model)
+        update_data = obj.dict()
         for field in obj_data:
             if field in update_data:
-                setattr(db_obj, field, update_data[field])
+                setattr(obj_data, field, update_data[field])
 
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
+        db_obj: Optional[Model] = self.model(**obj_data)
+        if db_obj:
+            db.add(db_obj)
+            db.commit()
+            db.refresh(db_obj)
 
         return db_obj
 
