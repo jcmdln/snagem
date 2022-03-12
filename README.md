@@ -2,7 +2,13 @@
 supported by [youtube-dl](https://github.com/ytdl-org/youtube-dl) so it may be
 enjoyed on your schedule.
 
-This is currently a work-in-progress, with focus being directed toward iterating
-over the [snagemd v1 API](./docs/openapi.yaml). The goal is to ensure that the
-API is intuitive and full-featured enough for our needs, as well as contexts a
-user is likely to explore such as monitoring and maintenance actions.
+
+Contributing
+---
+### Getting Started
+* https://fastapi.tiangolo.com/tutorial/
+* https://docs.sqlalchemy.org/en/20/tutorial/index.html
+* https://pydantic-docs.helpmanual.io/
+* https://alembic.sqlalchemy.org/en/latest/tutorial.html
+* https://docs.celeryproject.org/en/stable/getting-started/index.html
+* https://docs.celeryproject.org/projects/kombu/en/stable/introduction.html
