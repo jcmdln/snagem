@@ -5,12 +5,12 @@ from __future__ import annotations
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from snagd.api.v1.media import router as media_router
+from snagd.api.v2.media import router as media_router
 
-router = APIRouter(tags=["v1"])
+router = APIRouter(tags=["v2"])
 router.include_router(media_router)
 
-app = FastAPI(docs_url="/", redoc_url=None, title="Snagem v1")
+app = FastAPI(docs_url="/", redoc_url=None, title="Snagem v2")
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,

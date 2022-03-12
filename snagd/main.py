@@ -7,7 +7,7 @@ import click
 
 from uvicorn import run as uvicorn_run
 
-from snagd import app
+from snagd.api import app
 
 
 @click.command(name="snagd")

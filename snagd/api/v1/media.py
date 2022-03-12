@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from snagd.db import crud, model, schema, session
@@ -16,25 +16,16 @@ def media(db: Session = Depends(session.get_db)):
 
 
 @router.get("/media/{uuid}", response_model=schema.media.Base)
-def media_info(uuid: str, db: Session = Depends(session.get_db)) -> dict:
-    return crud.Media(model.Media).get(db=db, uuid=uuid)
+def media_info(uuid: str, db: Session = Depends(session.get_db)):
+    request = crud.Media(model.Media).get(db=db, uuid=uuid)
+
+    if not request:
+        raise HTTPException(status_code=404, detail=f"Media not found: {uuid}")
+
+    return request
 
 
 @router.post("/media/add", response_model=schema.media.Base)
-def media_add(source_url: str, db: Session = Depends(session.get_db)) -> dict:
+def media_add(source_url: str, db: Session = Depends(session.get_db)):
     obj = schema.media.Create(source_url=source_url)
     return crud.Media(model.Media).create(db=db, obj=obj)
-
-
-@router.delete("/media/remove")
-def media_remove(uuid: str) -> dict:
-    return {
-        "uuid": uuid,
-    }
-
-
-@router.put("/media/update", response_model=schema.media.Base)
-def media_update(uuid: str) -> dict:
-    return {
-        "uuid": uuid,
-    }
