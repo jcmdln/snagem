@@ -105,8 +105,9 @@ remove_redundant_aliases = true
 wrap_length = 99
 
 [tool.mypy]
+show_error_context = true
 strict = true
-strict_optional = false
+strict_optional = true
 # Disable specific '--strict' checks
 disallow_any_generics = false
 disallow_incomplete_defs = false
