@@ -16,7 +16,6 @@ version = "0.1.0"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-
 # snagem dependencies
 alembic = "^1.7.6"
 celery = "^5.2.3"
@@ -40,10 +39,6 @@ requests = "^2.27.1"
 sqlalchemy = "^1.4.31"
 uvicorn = "^0.17.5"
 youtube_dl = "*"
-
-# The following dependencies are required to not break virtualenvs when building container images.
-importlib-metadata = "*" # "^4.11.2"
-virtualenv = "^20.13.3"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.0"
