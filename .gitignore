@@ -17,6 +17,8 @@
 !poetry.toml
 !pyproject.toml
 !README.md
+!setup.cfg
+
 
 # Include specific files from specific directories
 !.github/workflows/*.yaml
