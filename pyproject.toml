@@ -81,6 +81,9 @@ snagd = "snagd.main:main"
 # Extras
 #
 
+[tool.bandit]
+ignore = ["101"]
+
 [tool.black]
 line-length = 99
 

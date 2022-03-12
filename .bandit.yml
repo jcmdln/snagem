@@ -1,4 +1,0 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
-assert_used:
-  skips: ["**/tests/**/*.py"]
