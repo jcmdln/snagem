@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+from __future__ import annotations
+
 from typing import Generic, Optional, Type, TypeVar
-from uuid import UUID
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -17,13 +18,6 @@ UpdateSchema = TypeVar("UpdateSchema", bound=BaseModel)
 class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
     def __init__(self, model: Type[Model]):
         self.model = model
-
-    def get(self, db: Session, uuid: UUID) -> Optional[Model]:
-        return db.query(self.model).filter(self.model.uuid == uuid).first()
-
-    #
-    # CRUD
-    #
 
     def create(self, db: Session, obj: CreateSchema) -> Optional[Model]:
         obj_data = jsonable_encoder(obj)
@@ -43,6 +37,12 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
             db.commit()
 
         return obj_data
+
+    def get(self, db: Session, uuid: str) -> Optional[Model]:
+        return db.query(self.model).filter_by(uuid=uuid).first()
+
+    def search(self, db: Session, limit: int = 100, skip: int = 0) -> list[Model]:
+        return db.query(self.model).offset(skip).limit(limit).all()
 
     def update(self, db: Session, obj: UpdateSchema) -> Optional[Model]:
         obj_data = jsonable_encoder(self.model)

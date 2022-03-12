@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -19,24 +18,36 @@ class Create(BaseModel):
 
 
 class Delete(BaseModel):
-    uuid: UUID
+    uuid: str
 
 
 class Update(BaseModel):
     categories: Optional[list[str]]
     description: Optional[str]
-    source_url: Optional[str]
     subtitles: Optional[list[str]]
     tags: Optional[list[str]]
     title: Optional[str]
+
+
+class Read(Update):
+    date_created: Optional[datetime]
+    date_updated: Optional[datetime]
+    duration: Optional[int]
+    source_url: Optional[str]
+    title: Optional[str]
+    uuid: Optional[str]
+    views: Optional[int]
 
 
 class Base(Create, Delete, Update):
     date_created: datetime
     date_updated: datetime
     duration: int
-    source_url: str
+    title: str
     views: int
 
+    class Config:
+        orm_mode = True
 
-__all__: list[str] = ["Base", "Create", "Delete", "Update"]
+
+__all__: list[str] = ["Base", "Create", "Delete", "Read", "Update"]
