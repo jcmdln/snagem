@@ -1,6 +1,5 @@
-`snagem` provides a simple way to track, retrieve, and manage content from sites
-supported by [youtube-dl](https://github.com/ytdl-org/youtube-dl) so it may be
-enjoyed on your schedule.
+`snagem` provides a simple way to track, retrieve, and manage content from sites supported by
+[youtube-dl](https://github.com/ytdl-org/youtube-dl) so it may be enjoyed on your schedule.
 
 See the following for subcomponent documentation:
 * [snagctl](./snagctl/README.md)
