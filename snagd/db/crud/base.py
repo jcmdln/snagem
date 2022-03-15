@@ -17,7 +17,7 @@ UpdateSchema = TypeVar("UpdateSchema", bound=BaseModel)
 
 class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
     def __init__(self, model: Type[Model]):
-        self.model = model
+        self.model: Type[Model] = model
 
     def create(self, db: Session, obj: CreateSchema) -> Optional[Model]:
         obj_data = jsonable_encoder(obj)
