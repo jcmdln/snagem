@@ -1,0 +1,38 @@
+---
+name: Lint
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        testenv: ["bandit", "flake8", "mypy"]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - uses: actions/cache@v2
+        with:
+          key: hashFiles("poetry.lock")
+          path: .venv
+
+      - name: Install system package dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git libpq-dev libsqlite3-dev python3-dev py3-wheel
+
+      - name: Install python package dependencies
+        run: |
+          python3 -m .venv
+          source .venv/bin/activate
+          pip install poetry tox
+
+      - name: Run ${{ matrix.testenv }}
+        run: poetry run tox -e ${{ matrix.testenv }}
