@@ -30,13 +30,14 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
         return db_obj
 
     def delete(self, db: Session, obj: DeleteSchema) -> Optional[Model]:
-        obj_data: Optional[Model] = db.query(self.model).get(obj)
+        obj_data = jsonable_encoder(obj)
+        db_data: Optional[Model] = db.query(self.model).get(obj_data)
 
-        if obj:
-            db.delete(obj_data)
+        if db_data:
+            db.delete(db_data)
             db.commit()
 
-        return obj_data
+        return db_data
 
     def get(self, db: Session, uuid: str) -> Optional[Model]:
         return db.query(self.model).filter_by(uuid=uuid).first()

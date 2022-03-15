@@ -46,4 +46,10 @@ def media_add(
         tags=tags,
         title=title,
     )
-    return task.media.add(obj, db)
+    return task.media.add(obj=obj, db=db)
+
+
+@router.delete("/media/remove", response_model=schema.media.Base)
+def media_remove(uuid: str, db: Session = Depends(session.get_db)):
+    obj: schema.media.Delete = schema.media.Delete(uuid=uuid)
+    return task.media.remove(obj=obj, db=db)
