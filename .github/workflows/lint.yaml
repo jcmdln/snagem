@@ -30,7 +30,7 @@ jobs:
 
       - name: Install python package dependencies
         run: |
-          python3 -m .venv
+          python3 -m venv .venv
           source .venv/bin/activate
           pip install poetry tox
 
