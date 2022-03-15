@@ -100,6 +100,7 @@ remove_redundant_aliases = true
 wrap_length = 99
 
 [tool.mypy]
+ignore_missing_imports = true
 show_error_context = true
 strict = true
 strict_optional = true
@@ -108,7 +109,4 @@ disallow_any_generics = false
 disallow_incomplete_defs = false
 disallow_subclassing_any = false
 disallow_untyped_calls = false
-disallow_untyped_decorators = false
 disallow_untyped_defs = false
-ignore_missing_imports = true
-warn_return_any = false
