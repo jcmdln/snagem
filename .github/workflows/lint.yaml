@@ -9,7 +9,10 @@ jobs:
 
     strategy:
       matrix:
-        testenv: ["bandit", "flake8", "mypy"]
+        include:
+          - name: bandit
+          - name: flake8
+          - name: mypy
 
     steps:
       - uses: actions/checkout@v2
@@ -18,11 +21,6 @@ jobs:
         with:
           python-version: "3.10"
 
-      - uses: actions/cache@v2
-        with:
-          key: hashFiles("poetry.lock")
-          path: .venv
-
       - name: Install system package dependencies
         run: |
           sudo apt-get update
@@ -30,9 +28,8 @@ jobs:
 
       - name: Install python package dependencies
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
           pip install poetry tox
 
-      - name: Run ${{ matrix.testenv }}
-        run: poetry run tox -e ${{ matrix.testenv }}
+      - name: Run ${{ matrix.name }}
+        run: |
+          poetry run tox -e ${{ matrix.name }}
