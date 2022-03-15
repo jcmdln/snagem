@@ -24,7 +24,7 @@ INFO:     Uvicorn running on http://127.0.0.1:5050 (Press CTRL+C to quit)
 
 ### Container
 ```sh
-$ sudo dnf --refresh -y install buildah podman
+$ sudo dnf --refresh -y install podman
 $ podman build . --tag jcmdln/snagem:release --target release
 $ podman run -it jcmdln/snagem:release
 INFO:     Started server process [$PID]
