@@ -9,10 +9,14 @@ from sqlalchemy import Column, DateTime, Integer, String
 from snagd.db import session
 
 
+def new_uuid() -> str:
+    return uuid.uuid4().__str__()
+
+
 class Media(session.Base):
     __tablename__ = "media"
 
-    uuid = Column(String, default=str(uuid.uuid4()), nullable=False, primary_key=True, unique=True)
+    uuid = Column(String, default=new_uuid, nullable=False, primary_key=True, unique=True)
     categories = Column(String)
     date_created = Column(DateTime, default=datetime.now, nullable=False)
     date_updated = Column(DateTime, default=datetime.now, nullable=False)
