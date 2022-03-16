@@ -20,6 +20,11 @@ class Create(Update):
     source_url: str
 
 
+class Read(Update):
+    source_url: Optional[str]
+    uuid: Optional[str]
+
+
 class Delete(BaseModel):
     uuid: str
 
@@ -34,4 +39,4 @@ class Base(Create, Delete, Update):
         orm_mode = True
 
 
-__all__: list[str] = ["Base", "Create", "Delete", "Update"]
+__all__: list[str] = ["Base", "Create", "Delete", "Read", "Update"]

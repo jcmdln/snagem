@@ -10,7 +10,7 @@ from snagd.db.schema import media
 
 
 class Media(Base[model.Media, media.Create, media.Delete, media.Update]):
-    def __init__(self, model: Type[model.Media] = model.Media):
+    def __init__(self, model: Type[model.Media] = model.Media) -> None:
         self.model = model
 
 

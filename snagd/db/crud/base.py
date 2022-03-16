@@ -12,11 +12,12 @@ from snagd.db import session
 Model = TypeVar("Model", bound=session.Base)
 CreateSchema = TypeVar("CreateSchema", bound=BaseModel)
 DeleteSchema = TypeVar("DeleteSchema", bound=BaseModel)
+ReadSchema = TypeVar("ReadSchema", bound=BaseModel)
 UpdateSchema = TypeVar("UpdateSchema", bound=BaseModel)
 
 
 class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
-    def __init__(self, model: Type[Model]):
+    def __init__(self, model: Type[Model]) -> None:
         self.model: Type[Model] = model
 
     def create(self, db: Session, obj: CreateSchema) -> Optional[Model]:
@@ -42,8 +43,15 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
     def get(self, db: Session, uuid: str) -> Optional[Model]:
         return db.query(self.model).filter_by(uuid=uuid).first()
 
-    def search(self, db: Session, limit: int = 100, skip: int = 0) -> list[Model]:
-        return db.query(self.model).offset(skip).limit(limit).all()
+    def search(self, db: Session, obj: ReadSchema, limit: int = 100, skip: int = 0) -> list[Model]:
+        obj_data: dict = obj.dict()
+        query = db.query(self.model)
+
+        for k, v in obj_data.items():
+            if v:
+                query = query.filter(getattr(self.model, k) == v)
+
+        return query.offset(skip).limit(limit).all()
 
     def update(self, db: Session, obj: UpdateSchema) -> Optional[Model]:
         obj_data = jsonable_encoder(self.model)
