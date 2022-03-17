@@ -19,7 +19,7 @@ def add(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     db: Session = Depends(session.get_db),
-):
+) -> Optional[model.Media]:
     obj: schema.media.Create = schema.media.Create(
         source_url=source_url,
         categories=categories,

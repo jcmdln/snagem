@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from snagd import task
-from snagd.db import schema, session
+from snagd.db import model, schema, session
 
 router = APIRouter()
 
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get_db),
-):
+) -> Optional[list[model.Media]]:
     return task.media.search(
         categories=categories,
         description=description,
@@ -37,7 +37,7 @@ def media(
 
 
 @router.get("/media/{uuid}", response_model=schema.media.Base)
-def media_info(uuid: str, db: Session = Depends(session.get_db)):
+def media_info(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
     return task.media.info(uuid=uuid, db=db)
 
 
@@ -50,7 +50,7 @@ def media_add(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     db: Session = Depends(session.get_db),
-):
+) -> Optional[model.Media]:
     return task.media.add(
         source_url=source_url,
         categories=categories,
@@ -63,7 +63,7 @@ def media_add(
 
 
 @router.delete("/media/remove", response_model=schema.media.Base)
-def media_remove(uuid: str, db: Session = Depends(session.get_db)):
+def media_remove(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
     return task.media.remove(uuid=uuid, db=db)
 
 
@@ -76,7 +76,7 @@ def media_update(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     db: Session = Depends(session.get_db),
-):
+) -> Optional[model.Media]:
     return task.media.update(
         categories=categories,
         description=description,

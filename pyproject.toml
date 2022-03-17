@@ -101,12 +101,11 @@ wrap_length = 99
 
 [tool.mypy]
 ignore_missing_imports = true
+plugins = ["sqlalchemy.ext.mypy.plugin"]
 show_error_context = true
 strict = true
 strict_optional = true
-# Disable specific '--strict' checks
+# Disable specific '--strict' and '--strict_optional' checks
 disallow_any_generics = false
-disallow_incomplete_defs = false
 disallow_subclassing_any = false
 disallow_untyped_calls = false
-disallow_untyped_defs = false

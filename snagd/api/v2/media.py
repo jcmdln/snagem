@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from snagd import task
-from snagd.db import schema, session
+from snagd.db import model, schema, session
 
 router = APIRouter()
 
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get_db),
-):
+) -> Optional[list[model.Media]]:
     return task.media.search(
         categories=categories,
         description=description,
