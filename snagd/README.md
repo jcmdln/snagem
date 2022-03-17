@@ -5,7 +5,7 @@ Testing
 ### Local
 ```sh
 $ sudo dnf --refresh -y install libpq-devel git poetry python3-devel sqlite-devel
-$ poetry install --no-dev
+$ poetry install
 $ poetry run tox
 ```
 
