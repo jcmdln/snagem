@@ -8,7 +8,7 @@ See the following for subcomponent documentation:
 
 Quickstart
 ---
-This section outlines how to quickly run Snagem
+This section outlines how to quickly run Snagem.
 
 ### Local
 ```sh
