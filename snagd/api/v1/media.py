@@ -24,7 +24,7 @@ def media(
     uuid: Optional[str] = None,
     db: Session = Depends(session.get_db),
 ):
-    obj: schema.media.Read = schema.media.Read(
+    return task.media.search(
         categories=categories,
         description=description,
         source_url=source_url,
@@ -32,8 +32,8 @@ def media(
         tags=tags,
         title=title,
         uuid=uuid,
+        db=db,
     )
-    return task.media.search(obj=obj, db=db)
 
 
 @router.get("/media/{uuid}", response_model=schema.media.Base)
@@ -51,18 +51,38 @@ def media_add(
     title: Optional[str] = None,
     db: Session = Depends(session.get_db),
 ):
-    obj: schema.media.Create = schema.media.Create(
+    return task.media.add(
         source_url=source_url,
         categories=categories,
         description=description,
         subtitles=subtitles,
         tags=tags,
         title=title,
+        db=db,
     )
-    return task.media.add(obj=obj, db=db)
 
 
 @router.delete("/media/remove", response_model=schema.media.Base)
 def media_remove(uuid: str, db: Session = Depends(session.get_db)):
-    obj: schema.media.Delete = schema.media.Delete(uuid=uuid)
-    return task.media.remove(obj=obj, db=db)
+    return task.media.remove(uuid=uuid, db=db)
+
+
+@router.put("/media/update", response_model=schema.media.Base)
+def media_update(
+    uuid: str,
+    categories: Optional[str] = None,
+    description: Optional[str] = None,
+    subtitles: Optional[str] = None,
+    tags: Optional[str] = None,
+    title: Optional[str] = None,
+    db: Session = Depends(session.get_db),
+):
+    return task.media.update(
+        categories=categories,
+        description=description,
+        subtitles=subtitles,
+        tags=tags,
+        title=title,
+        uuid=uuid,
+        db=db,
+    )

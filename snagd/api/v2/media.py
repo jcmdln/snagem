@@ -24,7 +24,7 @@ def media(
     uuid: Optional[str] = None,
     db: Session = Depends(session.get_db),
 ):
-    obj: schema.media.Read = schema.media.Read(
+    return task.media.search(
         categories=categories,
         description=description,
         source_url=source_url,
@@ -32,5 +32,5 @@ def media(
         tags=tags,
         title=title,
         uuid=uuid,
+        db=db,
     )
-    return task.media.search(obj=obj, db=db)

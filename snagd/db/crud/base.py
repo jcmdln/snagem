@@ -41,7 +41,8 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
         return db_data
 
     def get(self, db: Session, uuid: str) -> Optional[Model]:
-        return db.query(self.model).filter_by(uuid=uuid).first()
+        result: Model = db.query(self.model).filter_by(uuid=uuid).first()
+        return result
 
     def search(self, db: Session, obj: ReadSchema, limit: int = 100, skip: int = 0) -> list[Model]:
         obj_data: dict = obj.dict()
@@ -51,22 +52,23 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
             if v:
                 query = query.filter(getattr(self.model, k) == v)
 
-        return query.offset(skip).limit(limit).all()
+        result: list[Model] = query.offset(skip).limit(limit).all()
+        return result
 
-    def update(self, db: Session, obj: UpdateSchema) -> Optional[Model]:
-        obj_data = jsonable_encoder(self.model)
+    def update(self, db: Session, obj: UpdateSchema, uuid: str) -> Optional[Model]:
+        media_item: Optional[Model] = self.get(db=db, uuid=uuid)
+        obj_data = jsonable_encoder(media_item)
         update_data = obj.dict()
+
         for field in obj_data:
             if field in update_data:
-                setattr(obj_data, field, update_data[field])
+                setattr(media_item, field, update_data[field])
 
-        db_obj: Optional[Model] = self.model(**obj_data)
-        if db_obj:
-            db.add(db_obj)
-            db.commit()
-            db.refresh(db_obj)
+        db.add(media_item)
+        db.commit()
+        db.refresh(media_item)
 
-        return db_obj
+        return media_item
 
 
 __all__: list[str] = ["Base"]
