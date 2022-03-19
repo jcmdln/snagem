@@ -24,30 +24,48 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-20.04
-
+  lint:
     strategy:
       matrix:
+        os: [Ubuntu-20.04]
+        python-version: ["3.10"]
         include:
           - name: bandit
           - name: flake8
           - name: mypy
 
+    name: ${{ matrix.os }} ${{ matrix.python-version }} ${{ matrix.suffix }}
+    runs-on: ${{ matrix.image }}
+
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles("poetry.lock") }}
+
+      - name: Check cache health
+        if: steps.cache.outputs.cache-hit == "true"
+        run: timeout 10s poetry run pip --version || rm -rf .venv
 
       - name: Install system package dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git libpq-dev libsqlite3-dev python3-dev python3-wheel
 
-      # FIXME: poetry>=1.2,<2 once released
       - name: Install python package dependencies
         run: |
+          python${{ matrix.python-version }} -m venv --upgrade-deps .venv
+          source .venv
+          # FIXME: poetry>=1.2,<2 once released
           pip install poetry==1.2.0b1
           poetry install --only tox
 
