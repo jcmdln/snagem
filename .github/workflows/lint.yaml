@@ -50,7 +50,7 @@ jobs:
         id: cache
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles("poetry.lock") }}
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles("**/poetry.lock") }}
 
       - name: Check cache health
         if: steps.cache.outputs.cache-hit == "true"
