@@ -1,7 +1,27 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 ---
 name: Lint
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  pull_request:
+    paths:
+      - .github/workflows/lint.yaml
+      - poetry.lock
+      - pyproject.toml
+      - setup.cfg
+      - snagctl/**/*.py
+      - snagd/**/*.py
+      - snagd/db/alembic/script.py.mako
+  push:
+    paths:
+      - .github/workflows/lint.yaml
+      - poetry.lock
+      - pyproject.toml
+      - setup.cfg
+      - snagctl/**/*.py
+      - snagd/**/*.py
+      - snagd/db/alembic/script.py.mako
+  workflow_dispatch:
 
 jobs:
   test:
@@ -16,7 +36,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-python@v2
         with:
           python-version: "3.10"
@@ -26,11 +45,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git libpq-dev libsqlite3-dev python3-dev python3-wheel
 
+      # FIXME: poetry>=1.2,<2 once released
       - name: Install python package dependencies
         run: |
-          pip install poetry tox
-          poetry install
+          pip install poetry==1.2.0b1
+          poetry install --only tox
 
       - name: Run ${{ matrix.name }}
-        run: |
-          poetry run tox -e ${{ matrix.name }}
+        run: poetry run tox -e ${{ matrix.name }}

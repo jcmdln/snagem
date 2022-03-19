@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
+
 from __future__ import annotations
 
 from typing import Generic, Optional, Type, TypeVar
@@ -41,7 +42,7 @@ class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
         return db_data
 
     def get(self, db: Session, uuid: str) -> Optional[Model]:
-        result: Model = db.query(self.model).filter_by(uuid=uuid).first()
+        result: Optional[Model] = db.query(self.model).filter_by(uuid=uuid).first()
         return result
 
     def search(self, db: Session, obj: ReadSchema, limit: int = 100, skip: int = 0) -> list[Model]:
