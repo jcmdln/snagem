@@ -27,15 +27,14 @@ jobs:
   lint:
     strategy:
       matrix:
-        os: [Ubuntu-20.04]
         python-version: ["3.10"]
         include:
           - name: bandit
           - name: flake8
           - name: mypy
 
-    name: ${{ matrix.os }} ${{ matrix.python-version }} ${{ matrix.suffix }}
-    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.name }} ${{ matrix.python-version }} ${{ matrix.suffix }}
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
