@@ -56,7 +56,7 @@ jobs:
 
       - name: Setup venv
         run: |
-          touch --no-create .venv || python3.10 -m venv --upgrade-deps .venv
+          [ -d .venv ] || python3.10 -m venv --upgrade-deps .venv
           source .venv
 
       - name: Setup Tox
