@@ -11,7 +11,9 @@ method can be used based on whichever is more convenient for you.
 
 ### Local
 ```sh
-$ sudo dnf --refresh -y install git libpq-devel poetry python3-devel sqlite-devel
+$ sudo dnf --refresh -y install git libpq-devel python3-devel sqlite-devel
+# FIXME: poetry>=1.2,<2 once released
+$ pip install --user poetry==1.2.0b1
 $ poetry install
 $ poetry run tox
 ```

@@ -14,7 +14,7 @@ This section outlines how to quickly run snagem using Fedora 35 as an example.
 ```sh
 $ sudo dnf --refresh -y install git libpq-devel python3-devel sqlite-devel
 # FIXME: poetry>=1.2,<2 once released
-$ pip install poetry==1.2.0b1
+$ pip install --user poetry==1.2.0b1
 $ poetry install --only default
 $ poetry run snagd
 INFO:     Started server process [$PID]
