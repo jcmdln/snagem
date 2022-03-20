@@ -34,5 +34,6 @@ Contributing
 * https://docs.sqlalchemy.org/en/20/tutorial/index.html
 * https://pydantic-docs.helpmanual.io/
 * https://alembic.sqlalchemy.org/en/latest/tutorial.html
+* https://alembic.sqlalchemy.org/en/latest/cookbook.html
 * https://docs.celeryproject.org/en/stable/getting-started/index.html
 * https://docs.celeryproject.org/projects/kombu/en/stable/introduction.html
