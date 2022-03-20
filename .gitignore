@@ -17,8 +17,12 @@
 !setup.cfg
 
 # Include specific files from specific directories
+!.github/
+!.github/**/
 !.github/workflows/*.yaml
 
+!.vscode/
+!.vscode/**/
 !.vscode/extensions.json
 !.vscode/settings.json
 
