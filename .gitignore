@@ -3,9 +3,6 @@
 # Ignore everything
 *
 
-# Allow traversing directories
-!**/
-
 # Include these specific files
 !.dockerignore
 !.editorconfig
@@ -18,7 +15,6 @@
 !pyproject.toml
 !README.md
 !setup.cfg
-
 
 # Include specific files from specific directories
 !.github/workflows/*.yaml
