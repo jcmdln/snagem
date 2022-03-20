@@ -6,10 +6,10 @@ from typing import Type
 
 from snagd.db import model
 from snagd.db.crud import Base
-from snagd.db.schema import media
+from snagd.db.schema.media import MediaCreate, MediaDelete, MediaRead, MediaUpdate
 
 
-class Media(Base[model.Media, media.Create, media.Delete, media.Update]):
+class Media(Base[model.Media, MediaCreate, MediaDelete, MediaRead, MediaUpdate]):
     def __init__(self, model: Type[model.Media] = model.Media) -> None:
         self.model = model
 

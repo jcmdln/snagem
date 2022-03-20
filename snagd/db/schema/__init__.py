@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from snagd.db.schema import media
+from snagd.db.schema.media import Media, MediaCreate, MediaDelete, MediaRead, MediaUpdate
 
-__all__: list[str] = ["media"]
+__all__: list[str] = ["Media", "MediaCreate", "MediaDelete", "MediaRead", "MediaUpdate"]

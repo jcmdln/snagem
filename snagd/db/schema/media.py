@@ -8,7 +8,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class Update(BaseModel):
+class MediaUpdate(BaseModel):
     categories: Optional[list[str]]
     description: Optional[str]
     subtitles: Optional[list[str]]
@@ -16,20 +16,20 @@ class Update(BaseModel):
     title: Optional[str]
 
 
-class Create(Update):
+class MediaCreate(MediaUpdate):
     source_url: str
 
 
-class Read(Update):
+class MediaDelete(BaseModel):
+    uuid: str
+
+
+class MediaRead(MediaUpdate):
     source_url: Optional[str]
     uuid: Optional[str]
 
 
-class Delete(BaseModel):
-    uuid: str
-
-
-class Base(Create, Delete, Update):
+class Media(MediaCreate, MediaDelete, MediaUpdate):
     date_created: datetime
     date_updated: datetime
     duration: int
@@ -39,4 +39,4 @@ class Base(Create, Delete, Update):
         orm_mode = True
 
 
-__all__: list[str] = ["Base", "Create", "Delete", "Read", "Update"]
+__all__: list[str] = ["Media", "MediaCreate", "MediaDelete", "MediaRead", "MediaUpdate"]

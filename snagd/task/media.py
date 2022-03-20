@@ -18,9 +18,9 @@ def add(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[model.Media]:
-    obj: schema.media.Create = schema.media.Create(
+    obj: schema.MediaCreate = schema.MediaCreate(
         source_url=source_url,
         categories=categories,
         description=description,
@@ -32,13 +32,13 @@ def add(
 
 
 # task.media.info
-def info(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
+def info(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
     return crud.Media().get(db=db, uuid=uuid)
 
 
 # task.media.remove
-def remove(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
-    obj: schema.media.Delete = schema.media.Delete(uuid=uuid)
+def remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
+    obj: schema.MediaDelete = schema.MediaDelete(uuid=uuid)
     return crud.Media().delete(db=db, obj=obj)
 
 
@@ -51,9 +51,9 @@ def search(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[list[model.Media]]:
-    obj: schema.media.Read = schema.media.Read(
+    obj: schema.MediaRead = schema.MediaRead(
         categories=categories,
         description=description,
         source_url=source_url,
@@ -73,9 +73,9 @@ def update(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[model.Media]:
-    obj: schema.media.Update = schema.media.Update(
+    obj: schema.MediaUpdate = schema.MediaUpdate(
         categories=categories,
         description=description,
         subtitles=subtitles,

@@ -1,16 +1,12 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import uuid
 
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, Integer, String
 
 from snagd.db import session
-
-
-def new_uuid() -> str:
-    return uuid.uuid4().__str__()
+from snagd.util import new_uuid
 
 
 class Media(session.Base):
@@ -25,7 +21,7 @@ class Media(session.Base):
     source_url = Column(String, nullable=False)
     subtitles = Column(String)
     tags = Column(String)
-    title = Column(String, default="title", nullable=False)
+    title = Column(String, default="title")
     views = Column(Integer, default=0, nullable=False)
 
 

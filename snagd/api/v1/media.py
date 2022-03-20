@@ -13,7 +13,7 @@ from snagd.db import model, schema, session
 router = APIRouter()
 
 
-@router.get("/media", response_model=list[schema.media.Base])
+@router.get("/media", response_model=list[schema.Media])
 def media(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -22,7 +22,7 @@ def media(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[list[model.Media]]:
     return task.media.search(
         categories=categories,
@@ -36,12 +36,12 @@ def media(
     )
 
 
-@router.get("/media/{uuid}", response_model=schema.media.Base)
-def media_info(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
+@router.get("/media/{uuid}", response_model=schema.Media)
+def media_info(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
     return task.media.info(uuid=uuid, db=db)
 
 
-@router.post("/media/add", response_model=schema.media.Base)
+@router.post("/media/add", response_model=schema.Media)
 def media_add(
     source_url: str,
     categories: Optional[str] = None,
@@ -49,7 +49,7 @@ def media_add(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[model.Media]:
     return task.media.add(
         source_url=source_url,
@@ -62,12 +62,12 @@ def media_add(
     )
 
 
-@router.delete("/media/remove", response_model=schema.media.Base)
-def media_remove(uuid: str, db: Session = Depends(session.get_db)) -> Optional[model.Media]:
+@router.delete("/media/remove", response_model=schema.Media)
+def media_remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
     return task.media.remove(uuid=uuid, db=db)
 
 
-@router.put("/media/update", response_model=schema.media.Base)
+@router.put("/media/update", response_model=schema.Media)
 def media_update(
     uuid: str,
     categories: Optional[str] = None,
@@ -75,7 +75,7 @@ def media_update(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[model.Media]:
     return task.media.update(
         categories=categories,

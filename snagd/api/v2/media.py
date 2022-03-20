@@ -13,7 +13,7 @@ from snagd.db import model, schema, session
 router = APIRouter()
 
 
-@router.get("/media", response_model=list[schema.media.Base])
+@router.get("/media", response_model=list[schema.Media])
 def media(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -22,7 +22,7 @@ def media(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get_db),
+    db: Session = Depends(session.get),
 ) -> Optional[list[model.Media]]:
     return task.media.search(
         categories=categories,

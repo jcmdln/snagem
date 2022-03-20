@@ -17,7 +17,7 @@ ReadSchema = TypeVar("ReadSchema", bound=BaseModel)
 UpdateSchema = TypeVar("UpdateSchema", bound=BaseModel)
 
 
-class Base(Generic[Model, CreateSchema, DeleteSchema, UpdateSchema]):
+class Base(Generic[Model, CreateSchema, DeleteSchema, ReadSchema, UpdateSchema]):
     def __init__(self, model: Type[Model]) -> None:
         self.model: Type[Model] = model
 
