@@ -2,7 +2,7 @@
 schedule.
 
 See the following for subcomponent documentation:
-* [snagctl](./snagctl/README.md)
+* [snag](./snag/README.md)
 * [snagd](./snagd/README.md)
 
 

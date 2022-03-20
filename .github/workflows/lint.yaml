@@ -9,7 +9,7 @@ on:
       - poetry.lock
       - pyproject.toml
       - setup.cfg
-      - snagctl/**/*.py
+      - snag/**/*.py
       - snagd/**/*.py
       - snagd/db/alembic/script.py.mako
   push:
@@ -18,7 +18,7 @@ on:
       - poetry.lock
       - pyproject.toml
       - setup.cfg
-      - snagctl/**/*.py
+      - snag/**/*.py
       - snagd/**/*.py
       - snagd/db/alembic/script.py.mako
   workflow_dispatch:

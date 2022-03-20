@@ -6,17 +6,17 @@ from sys import exit
 import click
 
 
-@click.command(name="snagctl")
+@click.command(name="snag")
 @click.option(
     "--version",
     default=False,
-    help="Show snagctl version",
+    help="Show snag version",
     is_flag=True,
     type=bool,
 )
 def main(version: bool) -> None:
     if version:
-        print("snagctl v{}".format(pkg_version("snagem")))
+        print("snag v{}".format(pkg_version("snagem")))
 
     exit(0)
 

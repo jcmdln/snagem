@@ -9,7 +9,7 @@ authors = ["Johnathan C. Maudlin <jcmdln@gmail.com>"]
 description = ""
 license = "AGPL-3.0-or-later"
 name = "snagem"
-packages = [{ include = "snagctl" }, { include = "snagd" }]
+packages = [{ include = "snag" }, { include = "snagd" }]
 readme = "README.md"
 repository = "https://github.com/jcmdln/snagem"
 version = "0.1.0"
@@ -103,7 +103,7 @@ sqlalchemy2-stubs = "*"
 tox = "^3.24.5"
 
 [tool.poetry.scripts]
-snagctl = "snagctl.main:main"
+snag = "snag.main:main"
 snagd = "snagd.main:main"
 
 #

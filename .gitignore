@@ -31,10 +31,10 @@
 !docs/**/*.md
 !docs/**/*.yaml
 
-!snagctl/
-!snagctl/**/
-!snagctl/**/*.md
-!snagctl/**/*.py
+!snag/
+!snag/**/
+!snag/**/*.md
+!snag/**/*.py
 
 !snagd/
 !snagd/**/
