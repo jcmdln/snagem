@@ -4,6 +4,8 @@
   "files.associations": {
     // Ensure .dockerignore files in any subdir use .gitignore style
     "**/.dockerignore": "ignore",
+    // Ensure .ini files use properties style
+    "**/.ini": "properties",
   },
   // Hide these directories in the Explorer, and exclude from search
   "files.exclude": {
