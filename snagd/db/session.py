@@ -5,6 +5,7 @@ from __future__ import annotations
 from os import getenv
 from typing import Iterator
 
+from alembic import command, config
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,4 +30,8 @@ def get() -> Iterator[Session]:
         db.close()
 
 
-__all__: list[str] = ["Base", "SessionLocal", "db_url", "engine"]
+cfg = config.Config("alembic.ini")
+command.upgrade(cfg, revision="head")
+
+
+__all__: list[str] = ["Base", "SessionLocal", "db_url", "engine", "get"]

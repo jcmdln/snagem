@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+from __future__ import annotations
+
 from importlib.metadata import version as pkg_version
+from logging.config import fileConfig
 from sys import exit
 
 import click
@@ -8,6 +11,8 @@ import click
 from uvicorn import run as uvicorn_run
 
 from snagd.api import app
+
+fileConfig(fname="alembic.ini", disable_existing_loggers=False)
 
 
 @click.command(name="snagd")
@@ -23,7 +28,7 @@ def main(host: str, log_level: str, port: int, version: bool) -> None:
     if port < 1 or port > 65535:
         print("error: invalid port {}! Must be an int between 1-65535".format(port))
 
-    uvicorn_run(app=app, host=host, port=port, log_level=log_level)
+    uvicorn_run(app=app, host=host, port=port, log_config=None, log_level=log_level)
 
     exit(0)
 
