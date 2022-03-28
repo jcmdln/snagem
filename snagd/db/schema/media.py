@@ -5,10 +5,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from snagd.db.schema.base import Base
 
 
-class MediaUpdate(BaseModel):
+class MediaUpdate(Base):
     categories: Optional[list[str]]
     description: Optional[str]
     subtitles: Optional[list[str]]
@@ -20,7 +20,7 @@ class MediaCreate(MediaUpdate):
     source_url: str
 
 
-class MediaDelete(BaseModel):
+class MediaDelete(Base):
     uuid: str
 
 
@@ -34,9 +34,6 @@ class Media(MediaCreate, MediaDelete, MediaUpdate):
     date_updated: datetime
     duration: int
     views: int
-
-    class Config:
-        orm_mode = True
 
 
 __all__: list[str] = ["Media", "MediaCreate", "MediaDelete", "MediaRead", "MediaUpdate"]
