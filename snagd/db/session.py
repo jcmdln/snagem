@@ -30,8 +30,9 @@ def get() -> Iterator[Session]:
         db.close()
 
 
-cfg = config.Config("alembic.ini")
-command.upgrade(cfg, revision="head")
+def upgrade() -> None:
+    cfg = config.Config("alembic.ini")
+    command.upgrade(cfg, revision="head")
 
 
-__all__: list[str] = ["Base", "SessionLocal", "db_url", "engine", "get"]
+__all__: list[str] = ["Base", "SessionLocal", "db_url", "engine", "get", "upgrade"]
