@@ -36,40 +36,36 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: "3.7"
+          cache: "pip"
 
       - name: Setup venv cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-venv
         with:
-          key: venv-${{ matrix.name }}-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+          key: venv-${{ matrix.name }}-${{ hashFiles('poetry.lock') }}
           path: .venv
 
       - name: Setup Tox cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-tox
         with:
-          key: tox-${{ matrix.name }}-${{ runner.os }}-${{ hashFiles('poetry.lock', 'setup.cfg') }}
+          key: tox-${{ matrix.name }}-${{ hashFiles('poetry.lock', 'setup.cfg') }}
           path: .tox/${{ matrix.name }}
 
       - name: Install system packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git libpq-dev libsqlite3-dev
+        run: sudo apt-get update && sudo apt-get install -y git libpq-dev libsqlite3-dev
+
+      # FIXME: poetry>=1.2,<2 once released
+      - name: Install Poetry
+        run: pip install poetry==1.2.0b1
 
       - name: Install ${{ matrix.name }}
-        run: |
-          [ -d venv ] || python -m venv .venv
-          source .venv/bin/activate
-          # FIXME: poetry>=1.2,<2 once released
-          pip install poetry==1.2.0b1
-          poetry install --only tox
+        run: poetry install --only tox
 
       - name: Run ${{ matrix.name }}
-        run: |
-          source .venv/bin/activate
-          poetry run tox -e ${{ matrix.name }}
+        run: poetry run tox -e ${{ matrix.name }}
