@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# https://alembic.sqlalchemy.org/en/latest/tutorial.html
 
 from __future__ import annotations
 
 from logging.config import fileConfig
+from typing import Optional
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
@@ -28,7 +28,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    cfg: dict | None = config.get_section(config.config_ini_section)
+    cfg: Optional[dict] = config.get_section(config.config_ini_section)
     if not cfg:
         return
 
