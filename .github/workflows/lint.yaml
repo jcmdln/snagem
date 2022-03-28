@@ -63,7 +63,7 @@ jobs:
 
       - name: Install ${{ matrix.name }}
         run: |
-          [ -d venv ] || python -m venv --upgrade-deps .venv
+          [ -d venv ] || python -m venv .venv
           source .venv/bin/activate
           # FIXME: poetry>=1.2,<2 once released
           pip install poetry==1.2.0b1
