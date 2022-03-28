@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+from __future__ import annotations
+
 from datetime import datetime
+from typing import List
 
 from sqlalchemy import Column, DateTime, String
 
@@ -16,4 +19,4 @@ class Setting(session.Base):
     date_updated = Column(DateTime, default=datetime.now, nullable=False)
 
 
-__all__: list[str] = ["Setting"]
+__all__: List[str] = ["Setting"]

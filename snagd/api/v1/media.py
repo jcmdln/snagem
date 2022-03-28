@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -13,7 +13,7 @@ from snagd.db import model, schema, session
 router = APIRouter()
 
 
-@router.get("/media", response_model=list[schema.Media])
+@router.get("/media", response_model=List[schema.Media])
 def media(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[list[model.Media]] | Any:
+) -> Optional[List[model.Media]] | Any:
     return task.media.search(
         categories=categories,
         description=description,
