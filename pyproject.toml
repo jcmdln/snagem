@@ -38,8 +38,7 @@ requests = "^2.27.1"
 uvicorn = "^0.17.5"
 youtube_dl = "*"
 
-# FIXME: https://github.com/pypa/setuptools/pull/2872
-# FIXME: When resolved, remember to purge sqlalchemy types as they aren't needed in v2
+# FIXME: Use SQLAlchemy2
 psycopg2 = "^2.9.3"
 sqlalchemy = "^1.4.32"
 #psycopg = "^3.0.10"
@@ -83,6 +82,10 @@ pytest = "^7.0.0"
 
 [tool.poetry.group.mypy.dependencies]
 mypy = ">=0.941"
+# Plugins
+sqlalchemy = "*"
+# Type stubs
+sqlalchemy2-stubs = "*" # FIXME: Use SQLAlchemy2
 types-click = "^7.1.8"
 types-cryptography = "^3.3.15"
 types-humanfriendly = "^9.2.4"
@@ -92,12 +95,6 @@ types-orjson = "^3.6.2"
 types-pyyaml = "^6.0.4"
 types-redis = "^4.1.17"
 types-requests = "^2.27.11"
-# Plugins
-sqlalchemy = "*"
-
-# FIXME: https://github.com/pypa/setuptools/pull/2872
-# FIXME: When resolved, remember to purge sqlalchemy types as they aren't needed in v2
-sqlalchemy2-stubs = "*"
 
 [tool.poetry.group.tox.dependencies]
 tox = "^3.24.5"
