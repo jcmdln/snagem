@@ -8,9 +8,10 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from snagd.db import crud, model, schema, session
+from snagd.task.worker import celery
 
 
-# snagd.task.media.add
+@celery.task(name="snagd.task.media.add")
 def add(
     source_url: str,
     categories: Optional[str] = None,
@@ -31,18 +32,18 @@ def add(
     return crud.Media().create(db=db, obj=obj)
 
 
-# snagd.task.media.get
+@celery.task(name="snagd.task.media.get")
 def get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
     return crud.Media().get(db=db, uuid=uuid)
 
 
-# snagd.task.media.remove
+@celery.task(name="snagd.task.media.remove")
 def remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
     obj: schema.MediaDelete = schema.MediaDelete(uuid=uuid)
     return crud.Media().delete(db=db, obj=obj)
 
 
-# snagd.task.media.search
+@celery.task(name="snagd.task.media.search")
 def search(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -65,7 +66,7 @@ def search(
     return crud.Media().search(db=db, obj=obj)
 
 
-# snagd.task.media.update
+@celery.task(name="snagd.task.media.update")
 def update(
     uuid: str,
     categories: Optional[str] = None,
