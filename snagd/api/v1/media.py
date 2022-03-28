@@ -37,8 +37,8 @@ def media(
 
 
 @router.get("/media/{uuid}", response_model=schema.Media)
-def media_info(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
-    return task.media.info(uuid=uuid, db=db)
+def media_get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
+    return task.media.get(uuid=uuid, db=db)
 
 
 @router.post("/media/add", response_model=schema.Media)
