@@ -38,14 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install system packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git libpq-dev libsqlite3-dev
-
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.10"
+          python-version: "3.7"
 
       - name: Setup venv cache
         uses: actions/cache@v2
@@ -54,11 +49,6 @@ jobs:
           key: venv-${{ matrix.name }}-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
           path: .venv
 
-      - name: Setup venv
-        run: |
-          [ -d venv ] || python -m venv --upgrade-deps .venv
-          source .venv/bin/activate
-
       - name: Setup Tox cache
         uses: actions/cache@v2
         id: cache-tox
@@ -66,8 +56,15 @@ jobs:
           key: tox-${{ matrix.name }}-${{ runner.os }}-${{ hashFiles('poetry.lock', 'setup.cfg') }}
           path: .tox/${{ matrix.name }}
 
-      - name: Setup Tox
+      - name: Install system packages
         run: |
+          sudo apt-get update
+          sudo apt-get install -y git libpq-dev libsqlite3-dev
+
+      - name: Install ${{ matrix.name }}
+        run: |
+          [ -d venv ] || python -m venv --upgrade-deps .venv
+          source .venv/bin/activate
           # FIXME: poetry>=1.2,<2 once released
           pip install poetry==1.2.0b1
           poetry install --only tox
