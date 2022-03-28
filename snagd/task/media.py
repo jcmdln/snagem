@@ -83,3 +83,6 @@ def update(
         title=title,
     )
     return crud.Media().update(db=db, obj=obj, uuid=uuid)
+
+
+__all__: list[str] = ["add", "get", "remove", "search", "update"]
