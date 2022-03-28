@@ -21,6 +21,8 @@
   "editor.minimap.maxColumn": 99,
   // Set global wordwrap to 99 columns
   "editor.wordWrapColumn": 99,
+  // Don't align comments in toml files
+  "evenBetterToml.formatter.alignComments": false,
   // Set toml columnWidth
   "evenBetterToml.formatter.columnWidth": 99,
   // Automatically sort keys in toml files
