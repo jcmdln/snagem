@@ -70,4 +70,6 @@ jobs:
           poetry install --only tox
 
       - name: Run ${{ matrix.name }}
-        run: poetry run tox -e ${{ matrix.name }}
+        run: |
+          source .venv/bin/activate
+          poetry run tox -e ${{ matrix.name }}
