@@ -15,6 +15,8 @@ metadata = session.Base.metadata
 
 if config.config_file_name:
     fileConfig(fname=config.config_file_name)
+else:
+    fileConfig(fname="alembic.ini")
 
 
 def run_migrations_offline() -> None:
