@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[list[model.Media]]:
+) -> Optional[list[model.Media]] | Any:
     return task.media.search(
         categories=categories,
         description=description,
@@ -37,7 +37,8 @@ def media(
 
 
 @router.get("/media/{uuid}", response_model=schema.Media)
-def media_get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
+def media_get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media] | Any:
+    """Get a Media object by uuid."""
     return task.media.get(uuid=uuid, db=db)
 
 
@@ -50,7 +51,7 @@ def media_add(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[model.Media]:
+) -> Optional[model.Media] | Any:
     return task.media.add(
         source_url=source_url,
         categories=categories,
@@ -63,7 +64,7 @@ def media_add(
 
 
 @router.delete("/media/remove", response_model=schema.Media)
-def media_remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
+def media_remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media] | Any:
     return task.media.remove(uuid=uuid, db=db)
 
 
@@ -76,7 +77,7 @@ def media_update(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[model.Media]:
+) -> Optional[model.Media] | Any:
     return task.media.update(
         categories=categories,
         description=description,

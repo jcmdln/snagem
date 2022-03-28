@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[list[model.Media]]:
+) -> Optional[list[model.Media]] | Any:
     return task.media.search(
         categories=categories,
         description=description,
