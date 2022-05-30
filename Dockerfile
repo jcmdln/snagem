@@ -8,7 +8,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 FROM core AS build
 RUN apk --no-cache add \
     cargo gcc g++ libffi-dev libpq-dev openssl-dev patchelf python3-dev rust sqlite-dev
-RUN pip install git+https://github.com/python-poetry/poetry@dca0c56
+RUN pip install git+https://github.com/python-poetry/poetry@b1b3ce9
 COPY . /opt/snagem
 RUN python3 -m venv /opt/snagem/.venv
 ENV PATH="/opt/snagem/.venv/bin:$PATH"
