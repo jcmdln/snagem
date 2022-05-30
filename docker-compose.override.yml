@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+version: "3.7"
+
+services:
+  # postgres:
+  # rabbit:
+  # redis:
+
+  worker:
+    build:
+      context: ./
+      target: release
+
+  snagem:
+    build:
+      context: ./
+      target: release

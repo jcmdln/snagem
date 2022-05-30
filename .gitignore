@@ -8,6 +8,8 @@
 !.editorconfig
 !.gitignore
 !alembic.ini
+!docker-compose.yml
+!docker-compose.override.yml
 !Dockerfile
 !LICENSE.md
 !poetry.lock
