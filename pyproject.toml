@@ -18,45 +18,44 @@ version = "0.1.0"
 python = "^3.7"
 # snagem dependencies
 alembic = "^1.7.7"
-celery = "^5.2.3"
-click = "^8.0.4"
-cryptography = "^36.0.1"
+celery = "^5.2.6"
+click = "^8.1.3"
+cryptography = "^37.0.1"
 datetime = "^4.4"
-fastapi = "^0.74.1"
+fastapi = "^0.75.2"
 filelock = "^3.6.0"
 humanfriendly = "^10.0"
-itsdangerous = "^2.1.0"
-jinja2 = "^3.0.3"
+itsdangerous = "^2.1.2"
+jinja2 = "^3.1.2"
 kombu = "^5.2.4"
-orjson = "^3.6.7"
-pydantic = "^1.8.2"
-python-dateutil = "2.8.2"
+orjson = "^3.6.8"
+psycopg = "^3.0.10"
+pydantic = "^1.9.0"
+python-dateutil = "^2.8.2"
 python-multipart = "0.0.5"
 pyyaml = "^6.0"
-redis = "^4.1.4"
+redis = "^4.2.2"
 requests = "^2.27.1"
-uvicorn = "^0.17.5"
+sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "4fb6aca" }
+uvicorn = "^0.17.6"
 youtube_dl = "*"
 
-# FIXME: Use SQLAlchemy2
-psycopg2 = "^2.9.3"
-sqlalchemy = "^1.4.32"
-#psycopg = "^3.0.10"
-#sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "c2fe4a2" }
+[tool.poetry.dev-dependencies]
+tuna = "^0.5.11"
 
 [tool.poetry.group.bandit.dependencies]
-bandit = "^1.7.0"
+bandit = "^1.7.4"
 toml = "*"
 
 [tool.poetry.group.coverage.dependencies]
-coverage = "^6.3.1"
+coverage = "^6.3.2"
 
 [tool.poetry.group.flake8.dependencies]
-black = "^22.1.0"
+black = "^22.3.0"
 flake8 = "^4.0.1"
-flake8-black = "^0.2.4"
+flake8-black = "^0.3.2"
 flake8-docstrings = "^1.6.0"
-flake8-isort = "^4.0.2"
+flake8-isort = "^4.1.1"
 isort = "^5.10.1"
 mccabe = "*"
 pycodestyle = "*"
@@ -67,9 +66,9 @@ pyflakes = "*"
 pyls-flake8 = "^0.4.0"
 pyls-isort = "^0.2.2"
 pylsp-mypy = "^0.5.7"
-pylsp-rope = "^0.1.8"
-python-lsp-black = "^1.1.0"
-python-lsp-server = { version = "^1.3.3", extras = [
+pylsp-rope = "^0.1.9"
+python-lsp-black = "^1.2.1"
+python-lsp-server = { version = "^1.4.1", extras = [
     "mccabe",
     "pycodestyle",
     "pydocstyle",
@@ -78,26 +77,25 @@ python-lsp-server = { version = "^1.3.3", extras = [
 ] }
 
 [tool.poetry.group.pytest.dependencies]
-pytest = "^7.1.1"
+pytest = "^7.1.2"
 
 [tool.poetry.group.mypy.dependencies]
-mypy = ">=0.941"
+mypy = ">=0.950"
 # Plugins
 sqlalchemy = "*"
 # Type stubs
-sqlalchemy2-stubs = "*" # FIXME: Use SQLAlchemy2
 types-click = "^7.1.8"
-types-cryptography = "^3.3.15"
-types-humanfriendly = "^9.2.4"
+types-cryptography = "^3.3.21"
+types-humanfriendly = "^9.2.8"
 types-itsdangerous = "^1.1.6"
 types-jinja2 = "^2.11.9"
 types-orjson = "^3.6.2"
-types-pyyaml = "^6.0.4"
-types-redis = "^4.1.17"
-types-requests = "^2.27.11"
+types-pyyaml = "^6.0.7"
+types-redis = "^4.2.0"
+types-requests = "^2.27.25"
 
 [tool.poetry.group.tox.dependencies]
-tox = "^3.24.5"
+tox = "^3.25.0"
 
 [tool.poetry.scripts]
 snag = "snag.main:main"
@@ -108,7 +106,7 @@ snagd = "snagd.main:main"
 #
 
 [tool.bandit]
-ignore = ["101"]
+ignore = []
 
 [tool.black]
 line-length = 99
