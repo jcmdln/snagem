@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from fastapi import APIRouter
 
@@ -13,7 +13,7 @@ from snagd.task import celery
 router = APIRouter()
 
 
-@router.get("/media", response_model=list[schema.Media])
+@router.get("/media", response_model=List[schema.Media])
 def media(
     categories: Optional[str] = None,
     description: Optional[str] = None,

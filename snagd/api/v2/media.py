@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
     db: Session = Depends(session.get),
-) -> Optional[List[model.Media]] | Any:
+) -> Optional[list[model.Media]] | Any:
     return task.media.search(
         categories=categories,
         description=description,

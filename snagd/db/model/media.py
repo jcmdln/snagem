@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List
 
 from sqlalchemy import Column, DateTime, Integer, String
 
@@ -27,4 +26,4 @@ class Media(session.Base):
     views = Column(Integer, default=0, nullable=False)
 
 
-__all__: List[str] = ["Media"]
+__all__: list[str] = ["Media"]
