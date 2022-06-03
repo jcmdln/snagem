@@ -6,6 +6,7 @@
 # Include these specific files
 !.dockerignore
 !.editorconfig
+!.flake8
 !.gitignore
 !alembic.ini
 !docker-compose.yml
@@ -16,7 +17,7 @@
 !poetry.toml
 !pyproject.toml
 !README.md
-!setup.cfg
+!tox.ini
 
 # Include specific files from specific directories
 !.github/

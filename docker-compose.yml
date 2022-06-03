@@ -1,16 +1,37 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-version: "3.7"
+version: "3.8"
 
 volumes:
   postgres:
   rabbit:
   redis:
-  snagem:
 
 services:
+  api:
+    image: localhost/snagem:latest
+    command: snagd --host=0.0.0.0 --port=8080
+    depends_on:
+      - api_worker
+    environment:
+      SNAGEM_BACKEND_URL: redis://redis:6379/0
+      SNAGEM_BROKER_URL: amqp://snagem:snagem@rabbit:5672
+      SNAGEM_DATABASE_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+
+  api_worker:
+    image: localhost/snagem:latest
+    command: celery --app=snagd.worker worker --concurrency=1 --task-events
+    depends_on:
+      - rabbit
+      - redis
+      - postgres
+    environment:
+      SNAGEM_BACKEND_URL: redis://redis:6379/0
+      SNAGEM_BROKER_URL: amqp://snagem:snagem@rabbit:5672
+      SNAGEM_DATABASE_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+
   postgres:
-    image: postgres:14.2-alpine
+    image: postgres:14.3
     environment:
       POSTGRES_DB: snagem
       POSTGRES_USER: snagem
@@ -19,12 +40,11 @@ services:
       - postgres:/var/lib/postgresql/data
 
   rabbit:
-    image: rabbitmq:3.9.14-management-alpine
+    image: rabbitmq:3.10.2-management
     environment:
       RABBITMQ_DEFAULT_USER: snagem
       RABBITMQ_DEFAULT_PASS: snagem
       RABBITMQ_DIST_PORT: 25672
-      RABBITMQ_MNESIA_DIR: snagem
       RABBITMQ_NODE_IP_ADDRESS: 0.0.0.0
       RABBITMQ_NODE_PORT: 5672
     volumes:
@@ -35,34 +55,6 @@ services:
   # TODO: https://redis.io/docs/manual/replication/
   # TODO: https://redis.io/docs/manual/scaling/
   redis:
-    image: redis:6.2.6-alpine
-    environment:
-      PLACEHOLDER: wewlad
+    image: redis:7.0.0
     volumes:
       - redis:/data
-
-  snagem:
-    build:
-      context: ./
-      target: release
-    command: snagd --host 0.0.0.0 --port 8080
-    depends_on:
-      - worker
-    environment:
-      SNAGEM_BROKER_URL: redis://localhost:5678
-      SNAGEM_BACKEND_URL: amqp://snagem:snagem@rabbit:5672
-      SNAGEM_DATABASE_URL: postgres+psycopg2://snagem:snagem@postgres:5432/snagem
-
-  worker:
-    build:
-      context: ./
-      target: release
-    command: celery worker -A snagd.worker -l info -Q main-queue -c 1
-    depends_on:
-      - rabbit
-      - redis
-      - postgres
-    environment:
-      SNAGEM_BROKER_URL: redis://localhost:5678
-      SNAGEM_BACKEND_URL: amqp://snagem:snagem@rabbit:5672
-      SNAGEM_DATABASE_URL: postgres+psycopg2://snagem:snagem@postgres:5432/snagem

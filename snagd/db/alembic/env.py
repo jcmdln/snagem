@@ -8,6 +8,7 @@ from typing import Optional
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+from snagd.config import database_url
 from snagd.db import session
 
 config = context.config
@@ -32,7 +33,7 @@ def run_migrations_online() -> None:
     if not cfg:
         return
 
-    cfg["sqlalchemy.url"] = session.db_url
+    cfg["sqlalchemy.url"] = database_url
     connectable = engine_from_config(cfg, prefix="sqlalchemy.", poolclass=pool.NullPool)
     with connectable.connect() as connection:
         context.configure(connection=connection, target_metadata=metadata)

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from os import getenv
 from typing import Iterator
 
 from alembic import command, config
@@ -11,13 +10,14 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
-db_args: dict = {}
-db_url: str = getenv("DB_URL", "sqlite:///snagem.db")
+from snagd.config import database_url
 
-if "sqlite" in db_url.lower():
-    db_args = {"check_same_thread": False}
+database_args: dict = {}
 
-engine: Engine = create_engine(db_url, connect_args=db_args)
+if "sqlite" in database_url.lower():
+    database_args = {"check_same_thread": False}
+
+engine: Engine = create_engine(database_url, connect_args=database_args)
 SessionLocal: sessionmaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
@@ -35,4 +35,4 @@ def upgrade() -> None:
     command.upgrade(cfg, revision="head")
 
 
-__all__: list[str] = ["Base", "SessionLocal", "db_url", "engine", "get", "upgrade"]
+__all__: list[str] = ["Base", "SessionLocal", "engine", "get", "upgrade"]

@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from snagd import api, db, task, test, util
+from snagd import api, config, db, task, test, util
 
-__all__: list[str] = ["api", "db", "task", "test", "util"]
+__all__: list[str] = ["api", "config", "db", "task", "test", "util"]

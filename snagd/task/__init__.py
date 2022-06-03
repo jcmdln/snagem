@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
-from snagd.task import media, worker
+from snagd import worker
+from snagd.task import media
+from snagd.worker import celery
 
 __all__: list[str] = ["celery", "media", "worker"]

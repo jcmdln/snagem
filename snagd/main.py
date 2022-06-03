@@ -15,9 +15,9 @@ from snagd.db import session
 
 
 @click.command(name="snagd")
-@click.option("--log-level", default="debug", type=str)
 @click.option("--host", default="127.0.0.1", type=str)
-@click.option("--port", default=5050, type=int)
+@click.option("--log-level", default="debug", type=str)
+@click.option("--port", default=5150, type=int)
 @click.option("--version", default=False, is_flag=True, type=bool)
 def main(host: str, log_level: str, port: int, version: bool) -> None:
     if version:

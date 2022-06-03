@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Any, List, Optional
+from typing import Any, Optional
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from snagd import task
-from snagd.db import model, schema, session
+from snagd import config, task
+from snagd.db import model, schema
+from snagd.task import celery
 
 router = APIRouter()
 
 
-@router.get("/media", response_model=List[schema.Media])
+@router.get("/media", response_model=list[schema.Media])
 def media(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -22,8 +22,13 @@ def media(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get),
-) -> Optional[List[model.Media]] | Any:
+) -> list[schema.Media] | Any:
+    if config.broker_url:
+        return celery.send_task(
+            "snagd.media.search",
+            args=[categories, description, source_url, subtitles, tags, title, uuid],
+        ).get()
+
     return task.media.search(
         categories=categories,
         description=description,
@@ -32,14 +37,17 @@ def media(
         tags=tags,
         title=title,
         uuid=uuid,
-        db=db,
     )
 
 
 @router.get("/media/{uuid}", response_model=schema.Media)
-def media_get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media] | Any:
+def media_get(uuid: str) -> Optional[model.Media] | Any:
     """Get a Media object by uuid."""
-    return task.media.get(uuid=uuid, db=db)
+
+    if config.broker_url:
+        return celery.send_task("snagd.media.get", args=[uuid]).get()
+
+    return task.media.get(uuid=uuid)
 
 
 @router.post("/media/add", response_model=schema.Media)
@@ -50,8 +58,13 @@ def media_add(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get),
 ) -> Optional[model.Media] | Any:
+    if config.broker_url:
+        return celery.send_task(
+            "snagd.media.add",
+            args=[source_url, categories, description, subtitles, tags, title],
+        ).get()
+
     return task.media.add(
         source_url=source_url,
         categories=categories,
@@ -59,13 +72,15 @@ def media_add(
         subtitles=subtitles,
         tags=tags,
         title=title,
-        db=db,
     )
 
 
 @router.delete("/media/remove", response_model=schema.Media)
-def media_remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media] | Any:
-    return task.media.remove(uuid=uuid, db=db)
+def media_remove(uuid: str) -> Optional[model.Media] | Any:
+    if config.broker_url:
+        return celery.send_task("snagd.media.remove", args=[uuid]).get()
+
+    return task.media.remove(uuid=uuid)
 
 
 @router.put("/media/update", response_model=schema.Media)
@@ -76,8 +91,13 @@ def media_update(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get),
 ) -> Optional[model.Media] | Any:
+    if config.broker_url:
+        return celery.send_task(
+            "snagd.media.update",
+            args=[categories, description, subtitles, tags, title, uuid],
+        ).get()
+
     return task.media.update(
         categories=categories,
         description=description,
@@ -85,5 +105,4 @@ def media_update(
         tags=tags,
         title=title,
         uuid=uuid,
-        db=db,
     )

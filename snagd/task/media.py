@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
-from fastapi import Depends
-from sqlalchemy.orm import Session
+from fastapi.encoders import jsonable_encoder
 
 from snagd.db import crud, model, schema, session
-from snagd.task.worker import celery
+from snagd.worker import celery
 
 
-@celery.task(name="snagd.task.media.add")
+@celery.task(name="snagd.media.add")
 def add(
     source_url: str,
     categories: Optional[str] = None,
@@ -19,8 +18,7 @@ def add(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get),
-) -> Optional[model.Media]:
+) -> Optional[model.Media] | Any:
     obj: schema.MediaCreate = schema.MediaCreate(
         source_url=source_url,
         categories=categories,
@@ -29,21 +27,34 @@ def add(
         tags=tags,
         title=title,
     )
-    return crud.Media().create(db=db, obj=obj)
+
+    result = crud.Media().create(db=session.SessionLocal(), obj=obj)
+    if result:
+        return jsonable_encoder(result)
+
+    return None
 
 
-@celery.task(name="snagd.task.media.get")
-def get(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
-    return crud.Media().get(db=db, uuid=uuid)
+@celery.task(name="snagd.media.get")
+def get(uuid: str) -> Optional[model.Media] | Any:
+    result = crud.Media().get(db=session.SessionLocal(), uuid=uuid)
+    if result:
+        return jsonable_encoder(result)
+
+    return None
 
 
-@celery.task(name="snagd.task.media.remove")
-def remove(uuid: str, db: Session = Depends(session.get)) -> Optional[model.Media]:
+@celery.task(name="snagd.media.remove")
+def remove(uuid: str) -> Optional[model.Media] | Any:
     obj: schema.MediaDelete = schema.MediaDelete(uuid=uuid)
-    return crud.Media().delete(db=db, obj=obj)
+    result = crud.Media().delete(db=session.SessionLocal(), obj=obj)
+    if result:
+        return jsonable_encoder(result)
+
+    return None
 
 
-@celery.task(name="snagd.task.media.search")
+@celery.task(name="snagd.media.search")
 def search(
     categories: Optional[str] = None,
     description: Optional[str] = None,
@@ -52,8 +63,7 @@ def search(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get),
-) -> Optional[list[model.Media]]:
+) -> list[model.Media] | list[dict]:
     obj: schema.MediaRead = schema.MediaRead(
         categories=categories,
         description=description,
@@ -63,10 +73,15 @@ def search(
         title=title,
         uuid=uuid,
     )
-    return crud.Media().search(db=db, obj=obj)
+
+    result: list[dict] = []
+    for item in crud.Media().search(db=session.SessionLocal(), obj=obj):
+        result.append(jsonable_encoder(item))
+
+    return result
 
 
-@celery.task(name="snagd.task.media.update")
+@celery.task(name="snagd.media.update")
 def update(
     uuid: str,
     categories: Optional[str] = None,
@@ -74,8 +89,7 @@ def update(
     subtitles: Optional[str] = None,
     tags: Optional[str] = None,
     title: Optional[str] = None,
-    db: Session = Depends(session.get),
-) -> Optional[model.Media]:
+) -> Optional[model.Media] | Any:
     obj: schema.MediaUpdate = schema.MediaUpdate(
         categories=categories,
         description=description,
@@ -83,7 +97,12 @@ def update(
         tags=tags,
         title=title,
     )
-    return crud.Media().update(db=db, obj=obj, uuid=uuid)
+
+    result = crud.Media().update(db=session.SessionLocal(), obj=obj, uuid=uuid)
+    if result:
+        return jsonable_encoder(result)
+
+    return None
 
 
 __all__: list[str] = ["add", "get", "remove", "search", "update"]

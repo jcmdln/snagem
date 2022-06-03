@@ -1,3 +1,5 @@
+NOTE: This project doesn't do much yet! Sorry!
+
 `snagem` provides a simple way to track, retrieve and manage content so it may be enjoyed on your
 schedule.
 
@@ -8,36 +10,32 @@ See the following for subcomponent documentation:
 
 ## Quickstart
 
-This section outlines how to quickly run snagem using Fedora 35 as an example.
+This section outlines how to quickly run snagem using Fedora 36 as an example.
 
-### Local
+### Locally
+
+If you want to run snagem quickly and minimally, running `snagd` only requires sqlite:
 
 ```sh
-$ sudo dnf --refresh -y install git libpq-devel python3-devel sqlite-devel
-# FIXME: poetry>=1.2,<2 once released
-$ pip install --user git+https://github.com/python-poetry/poetry@b1b3ce9
-$ poetry install --only default
-$ poetry run snagd
-2022-03-26 02:24:05 INFO: alembic.runtime.migration: Context impl SQLiteImpl.
-2022-03-26 02:24:05 INFO: alembic.runtime.migration: Will assume non-transactional DDL.
-2022-03-26 02:24:05 INFO: uvicorn.error: Started server process [548350]
-2022-03-26 02:24:05 INFO: uvicorn.error: Waiting for application startup.
-2022-03-26 02:24:05 INFO: uvicorn.error: Application startup complete.
-2022-03-26 02:24:05 INFO: uvicorn.error: Uvicorn running on http://127.0.0.1:5050 (Press CTRL+C to quit)
+$ virtualenv .venv
+$ source .venv/bin/activate
+(.venv) $ pip install git+https://github.com/python-poetry/poetry@51824fc
+(.venv) $ poetry install --only main
+(.venv) $ snagd
 ```
 
 ### Container
 
+Snagem doesn't require being run in a container but it's really convenient for seeing how a
+polylith deployment works. This makes use of Postgres, Rabbit and Redis while providing an example
+of how Snagem might be packaged into more complex deployment systems which are outside the scope
+of this project.
+
 ```sh
-$ sudo dnf --refresh -y install podman
-$ podman build . --tag snagem:release --target release
-$ podman run -it snagem:release
-2022-03-26 02:24:05 INFO: alembic.runtime.migration: Context impl SQLiteImpl.
-2022-03-26 02:24:05 INFO: alembic.runtime.migration: Will assume non-transactional DDL.
-2022-03-26 02:24:05 INFO: uvicorn.error: Started server process [548350]
-2022-03-26 02:24:05 INFO: uvicorn.error: Waiting for application startup.
-2022-03-26 02:24:05 INFO: uvicorn.error: Application startup complete.
-2022-03-26 02:24:05 INFO: uvicorn.error: Uvicorn running on http://127.0.0.1:5050 (Press CTRL+C to quit)
+$ sudo dnf -y install docker-compose podman
+$ systemctl --user enable --now podman.sock
+$ export DOCKER_HOST="unix:///run/user/$UID/podman/podman.sock"
+$ docker-compose up
 ```
 
 ## Contributing
