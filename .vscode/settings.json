@@ -23,6 +23,9 @@
   "editor.wordWrapColumn": 99,
   // Don't align comments in toml files
   "evenBetterToml.formatter.alignComments": false,
+  // Don't automatically expand/collapse arrays in toml files
+  "evenBetterToml.formatter.arrayAutoCollapse": false,
+  "evenBetterToml.formatter.arrayAutoExpand": false,
   // Set toml columnWidth
   "evenBetterToml.formatter.columnWidth": 99,
   // Automatically sort keys in toml files
