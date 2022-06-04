@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from celery import Celery
 
-from snagd.config import backend_url, broker_url
+from snagd import config
 
-celery = Celery(name="worker", backend=backend_url, broker=broker_url)
+celery = Celery(name="worker", backend=config.backend_url, broker=config.broker_url)
+
+celery.conf.update(kwargs={"task_time_limit": config.task_time_limit})
 
 __all__: list[str] = ["celery"]
