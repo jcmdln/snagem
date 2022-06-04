@@ -29,7 +29,7 @@ def main(host: str, log_level: str, port: int, version: bool) -> None:
 
     session.upgrade()
     fileConfig(fname="alembic.ini", disable_existing_loggers=False)
-    uvicorn_run(app=app, host=host, port=port, log_config=None, log_level=log_level)
+    uvicorn_run(app=app, host=host, port=port, log_config=None, log_level=log_level.lower())
 
     exit(0)
 
