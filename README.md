@@ -19,9 +19,15 @@ If you want to run snagem quickly and minimally, running `snagd` only requires s
 ```sh
 $ virtualenv .venv
 $ source .venv/bin/activate
-(.venv) $ pip install git+https://github.com/python-poetry/poetry@51824fc
-(.venv) $ poetry install --only main
+(.venv) $ pip install .
 (.venv) $ snagd
+2022-06-03 18:37:32 INFO: alembic.runtime.migration: Context impl SQLiteImpl.
+2022-06-03 18:37:32 INFO: alembic.runtime.migration: Will assume non-transactional DDL.
+2022-06-03 18:37:32 INFO: alembic.runtime.migration: Running upgrade  -> 8cc1e0b83c3b
+2022-06-03 18:37:32 INFO: uvicorn.error: Started server process [568860]
+2022-06-03 18:37:32 INFO: uvicorn.error: Waiting for application startup.
+2022-06-03 18:37:32 INFO: uvicorn.error: Application startup complete.
+2022-06-03 18:37:32 INFO: uvicorn.error: Uvicorn running on http://127.0.0.1:5150 (Press CTRL+C to quit)
 ```
 
 ### Container
@@ -49,3 +55,15 @@ $ docker-compose up
         -   https://alembic.sqlalchemy.org
     -   https://docs.celeryq.dev
         -   https://docs.celeryq.dev/projects/kombu
+
+```sh
+# Install Poetry
+# TODO: poetry>=1.2,<2 once released
+$ curl -sSL https://install.python-poetry.org | python3 - --git https://github.com/python-poetry/poetry.git@ac49097
+
+# Install Snagem dependencies
+$ poetry install
+
+# Run Tox
+$ poetry run tox
+```
