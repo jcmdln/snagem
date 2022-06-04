@@ -32,9 +32,6 @@ pymysql = "^1.0.2"
 sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "ad86d32" }
 youtube_dl = "*"
 
-[tool.poetry.dev-dependencies]
-docker-compose = "^1.29.2"
-
 [tool.poetry.group.bandit.dependencies]
 bandit = [
     { version = "^1.7.4", extras = ["toml"], python = "<3.11" },
