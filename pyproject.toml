@@ -2,7 +2,8 @@
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=1.0.8"]
+# TODO: "poetry-core>=1.1.0<1.2" when released
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core@0092b50d"]
 
 [tool.poetry]
 authors = ["Johnathan C. Maudlin <jcmdln@gmail.com>"]
@@ -27,7 +28,8 @@ filelock = "^3.7.0"
 humanfriendly = "^10.0"
 psycopg = { version = "^3.0.14", extras = ["c"] }
 pymysql = "^1.0.2"
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "4fb6aca" }
+# TODO: "sqlalchemy>=2,<3" when released
+sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "ad86d32" }
 youtube_dl = "*"
 
 [tool.poetry.dev-dependencies]
@@ -35,7 +37,7 @@ docker-compose = "^1.29.2"
 
 [tool.poetry.group.bandit.dependencies]
 bandit = "^1.7.4"
-toml = "*"
+tomli = { version = "^2.0.1", python = "<3.11" }
 
 [tool.poetry.group.coverage.dependencies]
 coverage = "^6.3.2"
@@ -51,6 +53,7 @@ mccabe = "*"
 pycodestyle = "*"
 pydocstyle = "*"
 pyflakes = "*"
+rope = "*"
 
 [tool.poetry.group.lsp.dependencies]
 pyls-flake8 = "^0.4.0"
@@ -72,7 +75,8 @@ pytest = "^7.1.2"
 [tool.poetry.group.mypy.dependencies]
 mypy = ">=0.960"
 # Plugins
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "4fb6aca" }
+# TODO: "sqlalchemy>=2,<3" when released
+sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "ad86d32" }
 # Type stubs
 types-click = "^7.1.8"
 types-cryptography = "^3.3.21"
