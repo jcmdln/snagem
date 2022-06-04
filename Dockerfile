@@ -16,7 +16,9 @@ ENV PATH="/opt/snagem/.venv/bin:$PATH"
 RUN pip install .
 
 FROM core AS release
-COPY --from=build --chown=root:root /opt/snagem /opt/snagem
+RUN useradd --system snagem
+COPY --from=build --chown=snagem:snagem /opt/snagem /opt/snagem
 ENV PATH="/opt/snagem/.venv/bin:$PATH"
 WORKDIR /opt/snagem
+USER snagem
 CMD ["snagd"]
