@@ -64,7 +64,13 @@ pyls-isort = "^0.2.2"
 pylsp-mypy = "^0.5.8"
 pylsp-rope = "^0.1.9"
 python-lsp-black = "^1.2.1"
-python-lsp-server = { version = "^1.4.1", extras = ["mccabe", "pycodestyle", "pydocstyle", "pyflakes", "rope"] }
+python-lsp-server = { version = "^1.4.1", extras = [
+    "mccabe",
+    "pycodestyle",
+    "pydocstyle",
+    "pyflakes",
+    "rope",
+] }
 
 [tool.poetry.group.pytest.dependencies]
 pytest = "^7.1.2"
