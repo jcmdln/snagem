@@ -43,7 +43,6 @@ def media(
 @router.get("/media/{uuid}", response_model=schema.Media)
 def media_get(uuid: str) -> Optional[model.Media] | Any:
     """Get a Media object by uuid."""
-
     if config.broker_url:
         return celery.send_task("snagd.media.get", args=[uuid]).get()
 
