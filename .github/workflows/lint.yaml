@@ -44,7 +44,6 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
             poetry.lock
-            pyproject.toml
 
       - name: Setup venv cache
         uses: actions/cache@v3
@@ -57,7 +56,7 @@ jobs:
         uses: actions/cache@v3
         id: cache-tox
         with:
-          key: tox-${{ matrix.linter }}-${{ hashFiles('poetry.lock', 'pyproject.toml') }}
+          key: tox-${{ matrix.linter }}-${{ hashFiles('poetry.lock') }}
           path: .tox/${{ matrix.linter }}
 
       - name: Install system packages
@@ -65,7 +64,7 @@ jobs:
 
       # TODO: poetry>=1.2,<2 once released
       - name: Install Poetry
-        run: pip install git+https://github.com/python-poetry/poetry.git@master
+        run: pip install git+https://github.com/python-poetry/poetry.git@ac49097
 
       - name: Install ${{ matrix.linter }}
         run: poetry install --only tox
