@@ -49,6 +49,31 @@ def media_get(uuid: str) -> Optional[model.Media] | Any:
     return task.media.get(uuid=uuid)
 
 
+@router.put("/media/{uuid}/update", response_model=schema.Media)
+def media_update(
+    uuid: str,
+    categories: Optional[str] = None,
+    description: Optional[str] = None,
+    subtitles: Optional[str] = None,
+    tags: Optional[str] = None,
+    title: Optional[str] = None,
+) -> Optional[model.Media] | Any:
+    if config.broker_url:
+        return celery.send_task(
+            "snagd.media.update",
+            args=[categories, description, subtitles, tags, title, uuid],
+        ).get()
+
+    return task.media.update(
+        categories=categories,
+        description=description,
+        subtitles=subtitles,
+        tags=tags,
+        title=title,
+        uuid=uuid,
+    )
+
+
 @router.post("/media/add", response_model=schema.Media)
 def media_add(
     source_url: str,
@@ -80,28 +105,3 @@ def media_remove(uuid: str) -> Optional[model.Media] | Any:
         return celery.send_task("snagd.media.remove", args=[uuid]).get()
 
     return task.media.remove(uuid=uuid)
-
-
-@router.put("/media/update", response_model=schema.Media)
-def media_update(
-    uuid: str,
-    categories: Optional[str] = None,
-    description: Optional[str] = None,
-    subtitles: Optional[str] = None,
-    tags: Optional[str] = None,
-    title: Optional[str] = None,
-) -> Optional[model.Media] | Any:
-    if config.broker_url:
-        return celery.send_task(
-            "snagd.media.update",
-            args=[categories, description, subtitles, tags, title, uuid],
-        ).get()
-
-    return task.media.update(
-        categories=categories,
-        description=description,
-        subtitles=subtitles,
-        tags=tags,
-        title=title,
-        uuid=uuid,
-    )

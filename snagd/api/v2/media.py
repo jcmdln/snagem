@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Any, List, Optional
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from snagd import task
-from snagd.db import model, schema, session
+from snagd import config, task
+from snagd.db import schema
+from snagd.worker import celery
 
 router = APIRouter()
 
@@ -22,8 +22,13 @@ def media(
     tags: Optional[str] = None,
     title: Optional[str] = None,
     uuid: Optional[str] = None,
-    db: Session = Depends(session.get),
-) -> Optional[list[model.Media]] | Any:
+) -> list[schema.Media] | Any:
+    if config.broker_url:
+        return celery.send_task(
+            "snagd.media.search",
+            args=[categories, description, source_url, subtitles, tags, title, uuid],
+        ).get()
+
     return task.media.search(
         categories=categories,
         description=description,
@@ -32,5 +37,4 @@ def media(
         tags=tags,
         title=title,
         uuid=uuid,
-        db=db,
     )
