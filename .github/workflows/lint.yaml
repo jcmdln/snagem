@@ -5,19 +5,19 @@ name: Lint
 on:
   pull_request:
     paths:
+      - .flake8
       - .github/workflows/lint.yaml
       - poetry.lock
       - pyproject.toml
-      - setup.cfg
       - snag/**/*.py
       - snagd/**/*.py
       - snagd/db/alembic/script.py.mako
   push:
     paths:
+      - .flake8
       - .github/workflows/lint.yaml
       - poetry.lock
       - pyproject.toml
-      - setup.cfg
       - snag/**/*.py
       - snagd/**/*.py
       - snagd/db/alembic/script.py.mako
