@@ -6,7 +6,8 @@ from typing import Any, List, Optional
 
 from fastapi import APIRouter
 
-from snagd import config, task
+from snagd import task
+from snagd.config import config
 from snagd.db import schema
 from snagd.task.session import celery
 
