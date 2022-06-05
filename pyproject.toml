@@ -25,11 +25,13 @@ cryptography = "^37.0.1"
 datetime = "^4.4"
 fastapi = { version = "^0.78.0", extras = ["all"] }
 filelock = "^3.7.0"
+# TODO: https://github.com/python-greenlet/greenlet/issues/303
+greenlet = { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03" }
 humanfriendly = "^10.0"
 psycopg = { version = "^3.0.14", extras = ["c"] }
 pymysql = "^1.0.2"
 # TODO: "sqlalchemy>=2,<3" when released
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "ad86d32" }
+sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
 youtube_dl = "*"
 
 [tool.poetry.group.bandit.dependencies]
@@ -76,7 +78,7 @@ pytest = "^7.1.2"
 mypy = ">=0.960"
 # Plugins
 # TODO: "sqlalchemy>=2,<3" when released
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "ad86d32" }
+sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
 # Type stubs
 types-click = "^7.1.8"
 types-cryptography = "^3.3.21"
