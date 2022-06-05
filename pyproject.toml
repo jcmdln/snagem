@@ -26,7 +26,10 @@ datetime = "^4.4"
 fastapi = { version = "^0.78.0", extras = ["all"] }
 filelock = "^3.7.0"
 # TODO: https://github.com/python-greenlet/greenlet/issues/303
-greenlet = { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03" }
+greenlet = [
+    { version = ">=1.1.2", python = "<3.11" },
+    { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03", python = ">=3.11.0-alpha" },
+]
 humanfriendly = "^10.0"
 psycopg = { version = "^3.0.14", extras = ["c"] }
 pymysql = "^1.0.2"
@@ -80,7 +83,10 @@ pytest = "^7.1.2"
 mypy = ">=0.960"
 # Plugins
 # TODO: https://github.com/python-greenlet/greenlet/issues/303
-greenlet = { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03" }
+greenlet = [
+    { version = ">=1.1.2", python = "<3.11" },
+    { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03", python = ">=3.11.0-alpha" },
+]
 # TODO: "sqlalchemy>=2,<3" when released
 sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
 # Type stubs
