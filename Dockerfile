@@ -13,7 +13,7 @@ COPY . /opt/snagem
 WORKDIR /opt/snagem
 RUN python3 -m venv /opt/snagem/.venv
 ENV PATH="/opt/snagem/.venv/bin:$PATH"
-RUN pip install .
+RUN pip --disable-pip-version-check --no-cache-dir install .
 
 FROM core AS release
 RUN useradd --system snagem

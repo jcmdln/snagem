@@ -45,7 +45,7 @@ services:
     environment:
       CELERY_RESULT_BACKEND: redis://redis:6379/0
       CELERY_BROKER_URL: amqp://snagem:snagem@rabbit:5672
-      SQLALCHEMY_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+      SQLALCHEMY_URL: postgresql+psycopg2://snagem:snagem@postgres:5432/snagem
 
   snagd_worker:
     image: localhost/snagem:latest
@@ -57,4 +57,4 @@ services:
     environment:
       CELERY_BROKER_URL: amqp://snagem:snagem@rabbit:5672
       CELERY_RESULT_BACKEND: redis://redis:6379/0
-      SQLALCHEMY_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+      SQLALCHEMY_URL: postgresql+psycopg2://snagem:snagem@postgres:5432/snagem

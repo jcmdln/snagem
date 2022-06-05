@@ -25,25 +25,14 @@ cryptography = "^37.0.1"
 datetime = "^4.4"
 fastapi = { version = "^0.78.0", extras = ["all"] }
 filelock = "^3.7.0"
-# TODO: https://github.com/python-greenlet/greenlet/issues/303
-greenlet = [
-    { version = ">=1.1.2", python = "<3.11" },
-    { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03", python = ">=3.11.0-alpha" },
-]
 humanfriendly = "^10.0"
-psycopg = { version = "^3.0.14", extras = ["c"] }
+psycopg2 = "^2.9.3"
 pymysql = "^1.0.2"
-# TODO: "sqlalchemy>=2,<3" when released
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
+sqlalchemy = "^1.4.37"
 youtube_dl = "*"
 
 [tool.poetry.group.bandit.dependencies]
-bandit = [
-    { version = "^1.7.4", extras = ["toml"] },
-    # TODO: Use below version constraints when python 3.11 is released
-    # { version = "^1.7.4", extras = ["toml"], python = "<3.11" },
-    # { version = "^1.7.4", python = ">=3.11" },
-]
+bandit = { version = "^1.7.4", extras = ["toml"] }
 importlib-metadata = { version = "*", python = "<3.8" }
 
 [tool.poetry.group.coverage.dependencies]
@@ -82,13 +71,7 @@ pytest = "^7.1.2"
 [tool.poetry.group.mypy.dependencies]
 mypy = ">=0.960"
 # Plugins
-# TODO: https://github.com/python-greenlet/greenlet/issues/303
-greenlet = [
-    { version = ">=1.1.2", python = "<3.11" },
-    { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03", python = ">=3.11.0-alpha" },
-]
-# TODO: "sqlalchemy>=2,<3" when released
-sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
+sqlalchemy = "*"
 # Type stubs
 types-click = "^7.1.8"
 types-cryptography = "^3.3.21"
