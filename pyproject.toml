@@ -79,6 +79,8 @@ pytest = "^7.1.2"
 [tool.poetry.group.mypy.dependencies]
 mypy = ">=0.960"
 # Plugins
+# TODO: https://github.com/python-greenlet/greenlet/issues/303
+greenlet = { git = "https://github.com/python-greenlet/greenlet", rev = "fa91f03" }
 # TODO: "sqlalchemy>=2,<3" when released
 sqlalchemy = { git = "https://github.com/sqlalchemy/sqlalchemy", rev = "1508aed" }
 # Type stubs
