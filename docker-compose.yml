@@ -43,18 +43,18 @@ services:
     depends_on:
       - snagd_worker
     environment:
-      SNAGEM_BACKEND_URL: redis://redis:6379/0
-      SNAGEM_BROKER_URL: amqp://snagem:snagem@rabbit:5672
-      SNAGEM_DATABASE_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      CELERY_BROKER_URL: amqp://snagem:snagem@rabbit:5672
+      SQLALCHEMY_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
 
   snagd_worker:
     image: localhost/snagem:latest
-    command: celery --app=snagd.worker worker --concurrency=1 --loglevel=info --task-events
+    command: snagd-worker
     depends_on:
       - rabbit
       - redis
       - postgres
     environment:
-      SNAGEM_BACKEND_URL: redis://redis:6379/0
-      SNAGEM_BROKER_URL: amqp://snagem:snagem@rabbit:5672
-      SNAGEM_DATABASE_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem
+      CELERY_BROKER_URL: amqp://snagem:snagem@rabbit:5672
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      SQLALCHEMY_URL: postgresql+psycopg://snagem:snagem@postgres:5432/snagem

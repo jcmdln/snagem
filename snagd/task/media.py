@@ -7,7 +7,7 @@ from typing import Any, Optional
 from fastapi.encoders import jsonable_encoder
 
 from snagd.db import crud, model, schema, session
-from snagd.worker import celery
+from snagd.task.session import celery
 
 
 @celery.task(name="snagd.media.add")

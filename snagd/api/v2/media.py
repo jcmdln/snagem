@@ -8,7 +8,7 @@ from fastapi import APIRouter
 
 from snagd import config, task
 from snagd.db import schema
-from snagd.worker import celery
+from snagd.task.session import celery
 
 router = APIRouter()
 
@@ -23,7 +23,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
 ) -> list[schema.Media] | Any:
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task(
             "snagd.media.search",
             args=[categories, description, source_url, subtitles, tags, title, uuid],

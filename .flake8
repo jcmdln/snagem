@@ -15,4 +15,4 @@ ignore =
     # Black compatibility
     E203 # Whitespace before ':'
     W503 # Line break before binary operator
-max-line-length = 99
+max-line-length = 120

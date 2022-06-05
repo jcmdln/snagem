@@ -6,9 +6,10 @@ from typing import Any, List, Optional
 
 from fastapi import APIRouter
 
-from snagd import config, task
+from snagd import task
+from snagd.config import config
 from snagd.db import model, schema
-from snagd.task import celery
+from snagd.task.session import celery
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ def media(
     title: Optional[str] = None,
     uuid: Optional[str] = None,
 ) -> list[schema.Media] | Any:
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task(
             "snagd.media.search",
             args=[categories, description, source_url, subtitles, tags, title, uuid],
@@ -43,7 +44,7 @@ def media(
 @router.get("/media/{uuid}", response_model=schema.Media)
 def media_get(uuid: str) -> Optional[model.Media] | Any:
     """Get a Media object by uuid."""
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task("snagd.media.get", args=[uuid]).get()
 
     return task.media.get(uuid=uuid)
@@ -58,7 +59,7 @@ def media_update(
     tags: Optional[str] = None,
     title: Optional[str] = None,
 ) -> Optional[model.Media] | Any:
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task(
             "snagd.media.update",
             args=[categories, description, subtitles, tags, title, uuid],
@@ -83,7 +84,7 @@ def media_add(
     tags: Optional[str] = None,
     title: Optional[str] = None,
 ) -> Optional[model.Media] | Any:
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task(
             "snagd.media.add",
             args=[source_url, categories, description, subtitles, tags, title],
@@ -101,7 +102,7 @@ def media_add(
 
 @router.delete("/media/remove", response_model=schema.Media)
 def media_remove(uuid: str) -> Optional[model.Media] | Any:
-    if config.broker_url:
+    if config.CELERY_BROKER_URL:
         return celery.send_task("snagd.media.remove", args=[uuid]).get()
 
     return task.media.remove(uuid=uuid)

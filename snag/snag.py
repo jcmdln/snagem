@@ -51,11 +51,7 @@ class Media:
             else:
                 size = "?? MiB"
 
-            print(
-                'Downloading {} of {}: {}: "{}.{}"'.format(
-                    index, length, size, url.get("title"), url.get("ext")
-                )
-            )
+            print('Downloading {} of {}: {}: "{}.{}"'.format(index, length, size, url.get("title"), url.get("ext")))
 
             self.youtube_dl.download([url])
 

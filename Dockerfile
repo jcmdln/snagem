@@ -8,7 +8,7 @@ RUN ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 FROM core AS build
-RUN dnf install -y gcc git libpq-devel patchelf python3-devel python3-pip python3-wheel
+RUN dnf install -y gcc gcc-c++ git libpq-devel patchelf python3-devel python3-pip python3-wheel
 COPY . /opt/snagem
 WORKDIR /opt/snagem
 RUN python3 -m venv /opt/snagem/.venv
