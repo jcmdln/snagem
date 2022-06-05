@@ -37,7 +37,7 @@ youtube_dl = "*"
 [tool.poetry.group.bandit.dependencies]
 bandit = [
     { version = "^1.7.4", extras = ["toml"], python = "<3.11" },
-    { version = "^1.7.4", python = ">=3.11" },
+    { version = "^1.7.4", python = ">=3.11.0-alpha" },
 ]
 importlib-metadata = { version = "*", python = "<3.8" }
 
