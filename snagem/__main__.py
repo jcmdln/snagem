@@ -3,7 +3,6 @@ from importlib.metadata import version as pkg_version
 import click
 
 from snagem import settings
-from snagem.logger import Logger, logger
 
 
 @click.group(name="snagem", context_settings={"help_option_names": ["-h", "--help"]})
@@ -17,12 +16,6 @@ def cli() -> None:
 @click.option("--host", default=settings.UVICORN_URL, type=str)
 @click.option("--port", default=settings.UVICORN_PORT, type=int)
 def server(log_level: str, host: str, port: int) -> None:
-    log: Logger = logger()
-    log.info("Server")
-
-    if port < 1 or port > 65535:
-        log.error("invalid port:", port)
-
     from snagem.db import session
 
     session.upgrade()
@@ -40,9 +33,6 @@ def server(log_level: str, host: str, port: int) -> None:
 
 @click.command(name="worker")
 def worker() -> None:
-    log: Logger = logger()
-    log.info("Worker")
-
     from snagem.task.session import celery
 
     celery.start(
