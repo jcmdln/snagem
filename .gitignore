@@ -1,16 +1,13 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 # Ignore everything
 *
 
 # Include these specific files
 !.dockerignore
 !.editorconfig
-!.flake8
 !.gitignore
 !alembic.ini
-!docker-compose.yml
 !docker-compose.override.yml
+!docker-compose.yml
 !Dockerfile
 !LICENSE.md
 !poetry.lock
@@ -22,25 +19,16 @@
 # Include specific files from specific directories
 !.github/
 !.github/**/
-!.github/workflows/*.yaml
-
+!.github/workflows/*.yml
 !.vscode/
 !.vscode/**/
 !.vscode/extensions.json
 !.vscode/settings.json
-
-!docs/
-!docs/**/
-!docs/**/*.md
-!docs/**/*.yaml
-
-!snag/
-!snag/**/
-!snag/**/*.md
-!snag/**/*.py
-
-!snagd/
-!snagd/**/
-!snagd/**/*.md
-!snagd/**/*.py
-!snagd/db/alembic/script.py.mako
+!snagem/
+!snagem/**/
+!snagem/**/*.md
+!snagem/**/*.py
+!snagem/db/alembic/script.py.mako
+!test/
+!test/**/
+!test/**/*.py

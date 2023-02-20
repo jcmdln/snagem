@@ -1,12 +1,11 @@
-// SPDX-License-Identifier: AGPL-3.0-or-later
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "ms-python.python",
+    "esbenp.prettier-vscode",
     "ms-python.vscode-pylance",
     "redhat.vscode-yaml",
     "tamasfe.even-better-toml",
-    "vscode-icons-team.vscode-icons",
     "wayou.vscode-todo-highlight",
+    "charliermarsh.ruff"
   ]
 }

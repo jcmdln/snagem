@@ -1,16 +1,14 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 version: "3.8"
 
 services:
-  snagd:
+  api:
     build:
       context: ./
       target: release
     ports:
       - 5150:5150
 
-  snagd_worker:
+  worker:
     build:
       context: ./
       target: release
@@ -18,11 +16,6 @@ services:
   postgres:
     ports:
       - 5432:5432
-
-  rabbit:
-    ports:
-      - 5672:5672
-      - 25672:25672
 
   redis:
     ports:

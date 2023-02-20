@@ -1,159 +1,106 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 [build-system]
 build-backend = "poetry.core.masonry.api"
-# TODO: "poetry-core>=1.1.0<1.2" when released
-requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core@0092b50d"]
+requires = ["poetry-core>=1.4.0"]
 
 [tool.poetry]
 authors = ["Johnathan C. Maudlin <jcmdln@gmail.com>"]
 description = ""
 license = "AGPL-3.0-or-later"
 name = "snagem"
-packages = [{ include = "snag" }, { include = "snagd" }]
 readme = "README.md"
 repository = "https://github.com/jcmdln/snagem"
 version = "0.0.0"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-# snagem dependencies
-alembic = "^1.7.7"
-celery = { version = "^5.2.7", extras = ["redis"] }
-click = "^8.1.3"
-cryptography = "^37.0.1"
-datetime = "^4.4"
-fastapi = { version = "^0.78.0", extras = ["all"] }
-filelock = "^3.7.0"
-humanfriendly = "^10.0"
-psycopg2 = "^2.9.3"
-pymysql = "^1.0.2"
-sqlalchemy = "^1.4.37"
-youtube_dl = "*"
+python = "^3.10.0"
 
-[tool.poetry.group.bandit.dependencies]
-bandit = { version = "^1.7.4", extras = ["toml"] }
-importlib-metadata = { version = "*", python = "<3.8" }
+click = "~8.1.0"
+python-dateutil = "~2.8.0"
+yt-dlp = "^2023"
 
-[tool.poetry.group.coverage.dependencies]
-coverage = "^6.3.2"
+fastapi = "~0.92.0"
+pydantic = "~1.10.0"
 
-[tool.poetry.group.flake8.dependencies]
-black = "^22.3.0"
-flake8 = "^4.0.1"
-flake8-black = "^0.3.2"
-flake8-docstrings = "^1.6.0"
-flake8-isort = "^4.1.1"
-isort = "^5.10.1"
-mccabe = "*"
-pycodestyle = "*"
-pydocstyle = "*"
-pyflakes = "*"
-rope = "*"
+alembic = "~1.9.0"
+psycopg = { version = "~3.1.0", extras = ["c"] }
+sqlalchemy = "~2.0.0"
 
-[tool.poetry.group.lsp.dependencies]
-pyls-flake8 = "^0.4.0"
-pyls-isort = "^0.2.2"
-pylsp-mypy = "^0.5.8"
-pylsp-rope = "^0.1.9"
-python-lsp-black = "^1.2.1"
-python-lsp-server = { version = "^1.4.1", extras = [
-    "mccabe",
-    "pycodestyle",
-    "pydocstyle",
-    "pyflakes",
-    "rope",
-] }
+celery = "~5.3.0b1"
+redis = { version = "~4.5.0", extras = ["hiredis"] }
 
-[tool.poetry.group.pytest.dependencies]
-pytest = "^7.1.2"
+uvicorn = "~0.20.0"
+uvloop = "~0.17.0"
 
 [tool.poetry.group.mypy.dependencies]
-mypy = ">=0.960"
+mypy = "~1.0.0"
 # Plugins
 sqlalchemy = "*"
 # Type stubs
-types-click = "^7.1.8"
-types-cryptography = "^3.3.21"
-types-humanfriendly = "^9.2.8"
-types-itsdangerous = "^1.1.6"
-types-jinja2 = "^2.11.9"
-types-orjson = "^3.6.2"
-types-pymysql = "^1.0.19"
-types-python-dateutil = "^2.8.17"
-types-pyyaml = "^6.0.7"
-types-redis = "^4.2.0"
-types-requests = "^2.27.29"
-types-ujson = "^5.2.0"
+celery-types = "*"
+types-click = "*"
+
+[tool.poetry.group.pip-audit]
+optional = true
+[tool.poetry.group.pip-audit.dependencies]
+pip-audit = "~2.4.0"
+
+[tool.poetry.group.pytest.dependencies]
+coverage = "~6.5.0"
+httpx = "~0.23.0"
+pytest = "~7.2.0"
+pytest-cov = "~4.0.0"
+
+[tool.poetry.group.ruff.dependencies]
+black = "^23"
+ruff = "^0.0.247"
 
 [tool.poetry.group.tox.dependencies]
-tox = "^3.25.0"
+tox = "~4.4.0"
 
 [tool.poetry.scripts]
-snag = "snag.main:main"
-snagd = "snagd.main:snagd_server"
-snagd-worker = "snagd.main:snagd_worker"
+snagem = "snagem.__main__:cli"
 
 #
 # Tools
 #
 
-[tool.bandit]
-ignore = []
-
 [tool.black]
-line-length = 120
+line-length = 100
 
-[tool.isort]
-line_length = 120
-lines_between_types = 1
-profile = "black"
-remove_redundant_aliases = true
-wrap_length = 120
+[tool.coverage.run]
+omit = ["snagem/__main__.py", "snagem/db/alembic/*"]
+source = ["snagem/"]
 
 [tool.mypy]
+exclude = [".git/", ".tox/", ".venv/"]
 ignore_missing_imports = true
 plugins = ["sqlalchemy.ext.mypy.plugin"]
 show_error_context = true
 strict = true
 strict_optional = true
-# Disable specific '--strict' and '--strict_optional' checks
+# Disable specific "--strict" and "--strict_optional" checks
 disallow_any_generics = false
 disallow_subclassing_any = false
 disallow_untyped_calls = false
 disallow_untyped_decorators = false
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist =
-    bandit
-    flake8
-    mypy
-ignore_basepython_conflict = true
-isolated_build = true
-minversion = 3.20.0
-skip_missing_interpreters = true
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+filterwarnings = ["ignore", "default:::snagem"]
+testpaths = ["tests/"]
 
-[testenv]
-allowlist_externals = poetry
-skip_install = true
-
-[testenv:bandit]
-commands =
-    poetry install --no-root --only bandit
-    poetry run bandit --version
-    poetry run bandit -qrc "{toxinidir}/pyproject.toml" {toxinidir}/snag/ {toxinidir}/snagd/
-
-[testenv:flake8]
-commands =
-    poetry install --no-root --only flake8
-    poetry run flake8 --version
-    poetry run flake8 {toxinidir}/snag/ {toxinidir}/snagd/
-
-[testenv:mypy]
-commands =
-    poetry install --no-root --only mypy
-    poetry run mypy --version
-    poetry run mypy {toxinidir}/snag/ {toxinidir}/snagd/
-"""
+[tool.ruff]
+ignore = [
+    "D",
+    "ANN101",
+    "COM812",
+    "PLR2004",
+    "PT004",
+    "S101",
+    "TCH001",
+    "TCH002",
+    "TCH003",
+    "UP035",
+]
+line-length = 100
+select = ["ALL"]

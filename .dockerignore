@@ -1,5 +1,3 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 # Ignore everything
 *
 
@@ -13,13 +11,8 @@
 !setup.cfg
 
 # Include specific files from directories
-!snag/
-!snag/**/
-!snag/**/*.md
-!snag/**/*.py
-
-!snagd/
-!snagd/**/
-!snagd/**/*.md
-!snagd/**/*.py
-!snagd/db/alembic/script.py.mako
+!snagem/
+!snagem/**/
+!snagem/**/*.md
+!snagem/**/*.py
+!snagem/db/alembic/script.py.mako
