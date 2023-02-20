@@ -58,7 +58,7 @@ jobs:
       - name: Install system packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y git hiredis-dev libpq-dev libsqlite3-dev
+          sudo apt-get install -y git libhiredis-dev libpq-dev libsqlite3-dev
 
       - name: Install Poetry
         run: pip install "poetry>=1.2.0"
