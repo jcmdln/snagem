@@ -1,7 +1,6 @@
 import pytest
-
-import snagem.db.model.media as model
 from snagem.db import session
+from snagem.db.model import media as model
 
 
 @pytest.fixture(autouse=True, scope="package")

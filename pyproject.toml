@@ -52,7 +52,7 @@ pytest-cov = "~4.0.0"
 
 [tool.poetry.group.ruff.dependencies]
 black = "^23"
-ruff = "^0.0.247"
+ruff = ">=0.0.249"
 
 [tool.poetry.group.tox.dependencies]
 tox = "~4.4.0"
@@ -91,16 +91,11 @@ testpaths = ["tests/"]
 
 [tool.ruff]
 ignore = [
-    "D",
-    "ANN101",
-    "COM812",
-    "PLR2004",
-    "PT004",
-    "S101",
-    "TCH001",
-    "TCH002",
-    "TCH003",
-    "UP035",
+    "D",      # Ignore all documentation lints
+    "ANN101", # Missing type annotation for `self` in method
+    "COM812", # Trailing comma missing
+    "TCH001", # Move application import into a type-checking block
+    "TCH002", # Move 3rd-party import into a type-checking block
 ]
 line-length = 100
 select = ["ALL"]
