@@ -10,7 +10,7 @@ engine_args: dict = {"pool_pre_ping": True}
 if "sqlite" in settings.SQLALCHEMY_URL.lower():
     database_args = {"check_same_thread": False}
 else:
-    engine_args = {"max_overflow": 10, "pool_size": 5}
+    engine_args = {"max_overflow": 4, "pool_size": 1}
 
 Base: DeclarativeMeta = declarative_base()
 
