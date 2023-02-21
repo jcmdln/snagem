@@ -1,8 +1,13 @@
 from importlib.metadata import version as pkg_version
+from logging.config import fileConfig
 
 import click
+from uvicorn import run as uvicorn_run
 
 from snagem import settings
+from snagem.db import session
+from snagem.route.router import app
+from snagem.task.session import celery
 
 
 @click.group(name="snagem", context_settings={"help_option_names": ["-h", "--help"]})
@@ -16,25 +21,13 @@ def cli() -> None:
 @click.option("--host", default=settings.UVICORN_URL, type=str)
 @click.option("--port", default=settings.UVICORN_PORT, type=int)
 def server(log_level: str, host: str, port: int) -> None:
-    from snagem.db import session
-
     session.upgrade()
-
-    from logging.config import fileConfig
-
     fileConfig(fname="alembic.ini", disable_existing_loggers=False)
-
-    from uvicorn import run as uvicorn_run
-
-    from snagem.route.router import app
-
     uvicorn_run(app=app, host=host, port=port, log_config=None, log_level=log_level.lower())
 
 
 @click.command(name="worker")
 def worker() -> None:
-    from snagem.task.session import celery
-
     celery.start(
         argv=[
             "--app=snagem.task.session",
