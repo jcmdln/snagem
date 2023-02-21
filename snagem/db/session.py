@@ -14,7 +14,7 @@ else:
 
 Base: DeclarativeMeta = declarative_base()
 
-session: sessionmaker[Session] = sessionmaker(
+get: sessionmaker[Session] = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=create_engine(settings.SQLALCHEMY_URL, connect_args=database_args, **engine_args),
@@ -26,4 +26,4 @@ def upgrade() -> None:
     command.upgrade(cfg, revision="head")
 
 
-__all__: list[str] = ["Base", "session", "upgrade"]
+__all__: list[str] = ["Base", "get", "upgrade"]

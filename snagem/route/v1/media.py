@@ -18,11 +18,12 @@ async def media_search(
     subtitles: str | None = None,
     tags: str | None = None,
     title: str | None = None,
-) -> list[schema.Media | dict]:
+) -> list[dict]:
     _categories: list[str] | None = categories.split(",") if categories else None
     _subtitles: list[str] | None = subtitles.split(",") if subtitles else None
     _tags: list[str] | None = tags.split(",") if tags else None
-    result: list[schema.Media | dict] = task.search.delay(
+
+    result: list[dict] = task.search.delay(
         uuid=uuid,
         source_url=source_url,
         categories=_categories,
@@ -42,11 +43,12 @@ async def media_create(
     description: str | None = None,
     tags: str | None = None,
     title: str | None = None,
-) -> schema.Media | dict:
+) -> dict:
     _uuid: str = new_uuid().__str__()
     _categories: list[str] | None = categories.split(",") if categories else None
     _tags: list[str] | None = tags.split(",") if tags else None
-    result: schema.Media | dict = task.create.delay(
+
+    result: dict = task.create.delay(
         uuid=_uuid,
         source_url=source_url,
         categories=_categories,
@@ -58,8 +60,8 @@ async def media_create(
 
 
 @router.get("/media/{uuid}", response_model=schema.Media)
-async def media_read(uuid: str) -> schema.Media | dict:
-    result: schema.Media | dict = task.read.delay(uuid=uuid).get()
+async def media_read(uuid: str) -> dict:
+    result: dict = task.read.delay(uuid=uuid).get()
     return result
 
 
@@ -72,10 +74,11 @@ async def media_update(
     description: str | None = None,
     tags: str | None = None,
     title: str | None = None,
-) -> schema.Media | dict:
+) -> dict:
     _categories: list[str] | None = categories.split(",") if categories else None
     _tags: list[str] | None = tags.split(",") if tags else None
-    result: schema.Media | dict = task.update.delay(
+
+    result: dict = task.update.delay(
         uuid=uuid,
         source_url=source_url,
         categories=_categories,
@@ -87,8 +90,8 @@ async def media_update(
 
 
 @router.delete("/media/{uuid}", response_model=schema.Media)
-async def media_delete(uuid: str) -> schema.Media | dict:
-    result: schema.Media | dict = task.delete.delay(uuid=uuid).get()
+async def media_delete(uuid: str) -> dict:
+    result: dict = task.delete.delay(uuid=uuid).get()
     return result
 
 

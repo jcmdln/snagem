@@ -20,17 +20,14 @@ class Base(Generic[Model, Create, Delete, Read, Update]):
 
     def create(self, db: Session, obj: Create) -> Model | None:
         db_obj: Model = self.model(**obj.dict())
-
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
-
         db.close()
         return db_obj
 
     def delete(self, db: Session, obj: Delete) -> Model | None:
         query: Model | None = db.get(self.model, obj.dict())
-
         if query:
             db.delete(query)
             db.commit()
@@ -40,19 +37,16 @@ class Base(Generic[Model, Create, Delete, Read, Update]):
 
     def read(self, db: Session, uuid: str) -> Model | None:
         result: Model | None = db.query(self.model).filter_by(uuid=uuid).first()
-
         db.close()
         return result
 
     def search(self, db: Session, obj: Read, limit: int = 100, skip: int = 0) -> list[Model]:
         query = db.query(self.model)
-
         for k, v in obj.dict().items():
             if v:
                 query = query.filter(getattr(self.model, k) == v)
 
         result: list[Model] = query.offset(skip).limit(limit).all()
-
         db.close()
         return result
 
@@ -67,7 +61,6 @@ class Base(Generic[Model, Create, Delete, Read, Update]):
         db.add(query)
         db.commit()
         db.refresh(query)
-
         db.close()
         return query
 

@@ -10,6 +10,6 @@ def apply_migrations() -> None:
 
 @pytest.fixture(autouse=True, scope="module")
 def nuke_assets() -> None:
-    with session.session() as db:
+    with session.get() as db:
         db.query(model.Media).delete()
         db.commit()

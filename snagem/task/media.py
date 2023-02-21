@@ -1,7 +1,7 @@
+from snagem.db import session
 from snagem.db.crud import media as crud
 from snagem.db.model import media as model
 from snagem.db.schema import media as schema
-from snagem.db.session import session
 from snagem.task.session import celery
 
 
@@ -14,32 +14,33 @@ def create(
     description: str | None,
     tags: list[str] | None,
     title: str | None,
-) -> schema.Media | dict:
-    obj: schema.Create = schema.Create(
-        uuid=uuid,
-        categories=categories,
-        description=description,
-        tags=tags,
-        title=title,
-        source_url=source_url,
+) -> dict:
+    query: model.Media | None = crud.Media().create(
+        db=session.get(),
+        obj=schema.Create(
+            uuid=uuid,
+            categories=categories,
+            description=description,
+            tags=tags,
+            title=title,
+            source_url=source_url,
+        ),
     )
-    query: model.Media | None = crud.Media().create(db=session(), obj=obj)
-    result: schema.Media | dict = schema.Media.from_orm(query).dict()
+    result: dict = schema.Media.from_orm(query).dict()
     return result
 
 
 @celery.task
-def delete(uuid: str) -> schema.Media | dict:
-    obj: schema.Delete = schema.Delete(uuid=uuid)
-    query: model.Media | None = crud.Media().delete(db=session(), obj=obj)
-    result: schema.Media | dict = schema.Media.from_orm(query).dict()
+def delete(uuid: str) -> dict:
+    query: model.Media | None = crud.Media().delete(db=session.get(), obj=schema.Delete(uuid=uuid))
+    result: dict = schema.Media.from_orm(query).dict()
     return result
 
 
 @celery.task
-def read(uuid: str) -> schema.Media | dict:
-    query: model.Media | None = crud.Media().read(db=session(), uuid=uuid)
-    result: schema.Media | dict = schema.Media.from_orm(query)
+def read(uuid: str) -> dict:
+    query: model.Media | None = crud.Media().read(db=session.get(), uuid=uuid)
+    result: dict = schema.Media.from_orm(query).dict()
     return result
 
 
@@ -53,7 +54,7 @@ def search(
     subtitles: list[str] | None,
     tags: list[str] | None,
     title: str | None,
-) -> list[schema.Media | dict]:
+) -> list[dict]:
     obj: schema.Read = schema.Read(
         uuid=uuid,
         source_url=source_url,
@@ -64,8 +65,8 @@ def search(
         title=title,
     )
 
-    result: list[schema.Media | dict] = []
-    for item in crud.Media().search(db=session(), obj=obj):
+    result: list[dict] = []
+    for item in crud.Media().search(db=session.get(), obj=obj):
         result.append(schema.Media.from_orm(item).dict())
 
     return result
@@ -80,16 +81,19 @@ def update(
     description: str | None,
     tags: list[str] | None,
     title: str | None,
-) -> schema.Media | dict:
-    obj: schema.Update = schema.Update(
-        source_url=source_url,
-        categories=categories,
-        description=description,
-        tags=tags,
-        title=title,
+) -> dict:
+    query: model.Media | None = crud.Media().update(
+        db=session.get(),
+        obj=schema.Update(
+            source_url=source_url,
+            categories=categories,
+            description=description,
+            tags=tags,
+            title=title,
+        ),
+        uuid=uuid,
     )
-    query: model.Media | None = crud.Media().update(db=session(), obj=obj, uuid=uuid)
-    result: schema.Media | dict = schema.Media.from_orm(query).dict()
+    result: dict = schema.Media.from_orm(query).dict()
     return result
 
 

@@ -12,8 +12,7 @@ def health_api() -> str:
 
 @router.get("/health/worker")
 def health_worker() -> str:
-    health_task = task.health.worker.delay()
-    result: str = health_task.get()
+    result: str = task.health.worker.delay().get()
     return result
 
 
