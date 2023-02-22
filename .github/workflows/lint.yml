@@ -45,12 +45,7 @@ jobs:
         uses: actions/cache@v3
         id: cache-venv
         with:
-          key: >-
-            venv-${{
-            matrix.linter }}-${{
-            matrix.python-version }}-${{
-            matrix.os }}-${{
-            hashFiles('poetry.lock') }}
+          key: venv-${{ matrix.python-version }}-${{ matrix.os }}-${{ hashFiles('poetry.lock') }}
           path: .venv
 
       - name: Setup Tox cache
